@@ -29,4 +29,23 @@
 
 ### The tech stack explained
 
+- Major building blocks for this app, Sick Fits store, cart, checkout, account, sell items, application to create a online store.
+- React and GraphQL for front end
+- Front End
+  - React
+  - Next
+  - Apollo
+  - Styled Components and friends
+
+  - React is good at one thing, taking data and putting it into templates and rendering it out to the DOM. And update it on the page.
+  - Next.js, framework for React, takes good stuff from React, routing, paging, pages etc.
+  - Apollo Client, GraphQL, query all the items, interface and load in the data, cache and fetch, fetch data or push data to our server.
+  - Styles Components, scoped CSS in React, reusable styles, all the small UI components, reusable that are scoped, teach you the ideas and how to write scoped CSS modules you can re-use.
+
+- Back End
+  - Keystone.js, framework, headless CMS, login to your CMS and create all your data types and manage your data. The output is a GraphQL API allow us to write queries to get all the items. And return data you want. Going to use Apollo to make the queries and pull the data into app. Keystone will provide a GraphQL API base on all the CRUD operations, and Apollo will take the date to our Next.js app. Apollo is the middle man that gets the data and injects it into our React app.
+  - MongoDB, for the database, doesn't matter what db you use, keystone.js will work with all.
+
+### Learning Next.js
+
 -

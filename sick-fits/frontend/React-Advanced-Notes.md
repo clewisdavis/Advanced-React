@@ -48,4 +48,45 @@
 
 ### Learning Next.js
 
--
+- Framework for building websites and apps with React.
+- Next.js, does routing, linking from page to page, lazy loading, static or pre-rendering, images, etc.
+- In Next.js, you can just create pages, and it will work.
+- In the `pages` directory, create an `index.js`, will work very similar to how `index.html` works.
+
+- Then, you export a React function, and that's what shows up on the page.
+
+```JAVASCRIPT
+ export default function() {
+    return <div>
+       <p>Hello!</p>
+    <div>
+ }
+```
+
+- In your `package.json`, look at the scripts, to run do, `npm run dev`, and will run next.
+- The pages are file system based routing instead of config based routing
+- React Router is a config based, where you have a React router component
+
+- Make sure you name your function and it's not an anonymous function. Can name it what you want.
+
+```JAVASCRIPT
+ export default function IndexPage() {
+    return <div>
+       <p>Hello!</p>
+    <div>
+ }
+```
+
+- For the pages of your website or app. Just make a page and React component for each.
+- Then you can go directly to that page in the url. `localhost:5000/whatever`
+- Another nice thing, it does hot reloading, happens with our CSS and JS, will always hot reload
+
+- Next.js, is server rendered, view source, would see all the HTML. Then React will re-render components as needed.
+- When it gets to the client, browser, Next.js will then make it a React application.
+- This makes for nice page transitions. Only loads what need to be updated. Nice page transitions. Just swapping out the content you need.
+- Also can be static rendered. At build time you can pre-render pages. So they load really quickly.
+- So when someone visits the page, it's already native HTML so its really fast.
+- You can opt into server rendering, or static rendering, three properties, get static props, get server side props, get initial props. Will get into later.
+- Will get into linking and styling etc.
+
+### Creating a Page Layout Component

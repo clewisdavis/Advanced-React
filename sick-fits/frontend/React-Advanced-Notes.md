@@ -90,3 +90,41 @@
 - Will get into linking and styling etc.
 
 ### Creating a Page Layout Component
+
+- In Next.js, a page is the highest you can get, but where is all the other stuff, HTML, Head, Body etc.
+- In Next, everything that is in the page, just gets dumped to the `<body>`
+- If you want control at the higher level stuff.
+- Simple, how to get a nav to show up on every page?
+
+- Make a new component, called `Page.js` in your components directory
+
+```JAVASCRIPT
+export default function Page() {
+  return (
+    <div>
+      <h2>I am the page component!</h2>
+    </div>
+  );
+}
+```
+
+- How do you make this show up on every single page?
+- Import it into your page, and use it.
+
+```JAVASCRIPT
+import Page from '../components/Page';
+
+export default function IndexPage() {
+  return (
+    <Page>
+      <p>Hello!!</p>
+    </Page>
+  );
+}
+```
+
+- VSCode has an auto import, if you write a component and haven't imported it.
+- Put you cursor inside the component, and hit `Cntrl + Spacebar` and VSCode will give you options to auto import the component.
+
+- Now you need to render out the children of that `<Page>` component.
+- Rewind and go through again

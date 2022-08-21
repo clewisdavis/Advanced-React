@@ -127,4 +127,50 @@ export default function IndexPage() {
 - Put you cursor inside the component, and hit `Cntrl + Spacebar` and VSCode will give you options to auto import the component.
 
 - Now you need to render out the children of that `<Page>` component.
-- Rewind and go through again
+- In order to render out the children of the `<Page>` component, add `{children}` to the component within your `return`.
+- You get `{children}` from the arguments of the function.
+- Where do you get the `children` variable, you get it from `props` passed in as an argument into the component.
+
+```JAVASCRIPT
+export default function Page(props) {
+  return (
+    <div>
+      <h2>I am the page component!</h2>
+      {props.children}
+    </div>
+  );
+}
+```
+
+- Now, you are able to render out anything that is a child of the `<Page>` component.
+
+```JAVASCRIPT
+import Page from '../components/Page';
+
+export default function IndexPage() {
+  return (
+    <Page>
+      <p>Hello!!</p>
+      <code>code</code>
+      <p>I am a child</p>
+    </Page>
+  );
+}
+```
+
+- Still getting some errors, you must use destructuring for assignment.
+- You [destructure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the `props` argument, into the props you need.
+- Destructure the argument as `{ children }` then you can get the value direclty from the destructured object.
+
+```JAVASCRIPT
+export default function Page({ children }) {
+  return (
+    <div>
+      <h2>I am the page component!</h2>
+      {children}
+    </div>
+  );
+}
+```
+
+- In your `<Page>` component, you can pass in

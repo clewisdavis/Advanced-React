@@ -173,4 +173,106 @@ export default function Page({ children }) {
 }
 ```
 
-- In your `<Page>` component, you can pass in
+- In your `<Page>` component, define a `prop` and pass it onto your `index.js` to use.
+- Add the `propTypes` to avoid any squiggly.
+
+```JAVASCRIPT
+// PAGE COMPONENT
+import PropTypes from 'prop-types';
+
+export default function Page({ children, cool }) {
+  return (
+    <div>
+      <h2>I am the page component!</h2>
+      <h3>{cool}</h3>
+      {children}
+    </div>
+  );
+}
+
+Page.propTypes = {
+  cool: PropTypes.string,
+  children: PropTypes.any,
+};
+```
+
+```JAVASCRIPT
+// INDEX.JS PAGE, PAGES DIRECTORY
+import Page from '../components/Page';
+
+export default function IndexPage() {
+  return (
+    <Page cool="Camaro">
+      <p>Hello!! on index</p>
+      <code>code on index</code>
+      <p>I am a child on index</p>
+    </Page>
+  );
+}
+```
+
+- Can we create a file that will always wrap everything in a `<Page>` component?
+- Where you can get access to everything in the `<head>` of a document.
+- Special files in Next.js
+- Make a new file in `pages` directory, `pages/_app.js`
+
+- In Next.js, must have a `pages` directory and if you want to control anything higher than the page component. You must do it in your `_app.js` file.
+
+```JAVASCRIPT
+// pages/_app.js
+import Page from '../components/Page';
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <Page>
+      <Component {...pageProps} />
+    </Page>
+  );
+}
+```
+
+- It's a `prop` of the `<App>` component, need to pass down the `{ Component, pageProps }` to pass down.
+- Then use your `<Component />`, and spread your `{ ...pageProps }` into it. `<Component { ...pageProps } />`
+
+- You no longer need to wrap everything in a `<Page>` component, it is being down globally in your `_app.js` file.
+
+- Note: Wrap your elements in a React fragment to prevent build errors.
+
+```JAVASCRIPT
+export default function IndexPage() {
+  return (
+    <>
+      <p>Hello!! on index</p>
+      <code>code on index</code>
+      <p>I am a child on index</p>
+    </>
+  );
+}
+```
+
+- Now, make a custom `_document.js` for our layout.
+- As of this tutorial, not API for document so you have to `extend` and use a `class`.
+
+```JAVASCRIPT
+import Document, {Html, Head, NextScript, Main} from 'next/document';
+
+export default function class MyDocument extends Document {
+    render() {
+        return (
+            <Html lang="en">
+                <Head></Head>
+                <body>
+                    <Main/>
+                    <NextStript />
+                </body>
+            </Html>
+        )
+    }
+}
+```
+
+- In order to add `css` to the `head`, you need to specify the `document`.
+- Mainly a config. Kill your terminal process and re-run. Now you should see `lang="en"` appear in your `<html>` tag.
+- A little confusing, but more config and set up.
+
+### Creating our Header and Nav Components

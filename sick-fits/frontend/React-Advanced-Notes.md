@@ -46,7 +46,7 @@
   - Keystone.js, framework, headless CMS, login to your CMS and create all your data types and manage your data. The output is a GraphQL API allow us to write queries to get all the items. And return data you want. Going to use Apollo to make the queries and pull the data into app. Keystone will provide a GraphQL API base on all the CRUD operations, and Apollo will take the date to our Next.js app. Apollo is the middle man that gets the data and injects it into our React app.
   - MongoDB, for the database, doesn't matter what db you use, keystone.js will work with all.
 
-### Learning Next.js
+## Learning Next.js
 
 - Framework for building websites and apps with React.
 - Next.js, does routing, linking from page to page, lazy loading, static or pre-rendering, images, etc.
@@ -276,3 +276,78 @@ export default function class MyDocument extends Document {
 - A little confusing, but more config and set up.
 
 ### Creating our Header and Nav Components
+
+- In your `components` directory, create a new file, `components/Header.js`
+- And set it up
+
+```JAVASCRIPT
+export default function Header() {
+  return (
+    <header>
+      <p>I am the header</p>
+    </header>
+  );
+}
+```
+
+- In your `Pages` component, import and use the new `<Header/>`
+- TIP: Auto import, type the component name, then `Cntl + Spacebar` to bring up the drop down to import.
+
+- Now start to template out your header in HTML.
+
+#### Now, how do you link from page to page?
+
+- If you use regular `anchor` tag, it will refresh the entire page every time you navigate.
+- What we want, to move from page to page without having to refresh the entire page.
+- Nice thing about Next.js, triggers and re-renders when a url has changed using the Next.js `<Link href="/">` tag.
+
+```JAVASCRIPT
+import Link from 'next/link';
+
+export default function Header() {
+  return (
+    <header>
+      <div className="bar">
+        <Link href="/">Sick Fits</Link>
+      </div>
+      <div className="sub-bar">
+        <p>Search</p>
+      </div>
+    </header>
+  );
+}
+```
+
+- Now, navigate to your sell page, and click the link. Page loads really fast and doesn't refresh.
+
+#### Set up a Nav component
+
+- Create a new file, `Nav.js` and create your nav.
+
+```JAVASCRIPT
+import Link from 'next/link';
+
+export default function Nav() {
+  return (
+    <nav>
+      <Link href="/product">Product</Link>
+      <Link href="/sell">Sell</Link>
+      <Link href="/orders">Orders</Link>
+      <Link href="/account">Account</Link>
+    </nav>
+  );
+}
+```
+
+- Add it to your `Header.js` component. Now you can navigate from page to page. Notice the speed. Really fast and the entire page does not refresh.
+
+- Anytime you want to link to something that is part of your website, use the `<Link href="/products">` tag, to your pages.
+- To link externally, use the a regular `a href` anchor link.
+
+## CSS and Styled Components
+
+- Start writing some styles with [Styled Components](https://styled-components.com/)
+
+### Intro to Styled Components and CSS
+
+-

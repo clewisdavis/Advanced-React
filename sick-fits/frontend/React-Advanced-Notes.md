@@ -350,4 +350,80 @@ export default function Nav() {
 
 ### Intro to Styled Components and CSS
 
--
+- React give you lots of options for writing css, this covers scoped CSS, using styled components
+- CSS in JS, you define all your CSS, within the component. Benefits, you scope your CSS really easily.
+- You can use variables inside of your component.
+
+```HTML
+<h1 className="logo">My Header</h1>
+```
+
+- Instead of applying classes directly to your element.
+- You create a component for it, with the styles attached to it. And it's scoped to that component and will not apply to any other part of page.
+- So if you have a common class name, it will not break or cascade into other areas.
+
+- Define your new styled component, `const Logo = styled.h1``;`
+- After the `styled.` is where you tell it what type of component you want it to be.
+- And always use backticks ``, called a template literal.
+
+```JAVASCRIPT
+const Logo = styled.h1`
+  background: red;
+`;
+```
+
+- Make sure you import `styled-components`.
+- To Apply, go to where you used the `<h1>`, and replace it with `<Logo>`.
+- If you inspect the DOM, you will see `<Logo>` being rendered as an `<h1>`.
+- Notice the class name, looks really random, associated with the style.
+
+```JAVASCRIPT
+import Link from 'next/link';
+import styled from 'styled-components';
+import Nav from './Nav';
+
+// Styled Component
+const Logo = styled.h1`
+  background: red;
+  a {
+    color: white;
+  }
+`;
+
+export default function Header() {
+  return (
+    <header>
+      <div className="bar">
+        <Logo>
+          <Link href="/">Sick Fits</Link>
+        </Logo>
+      </div>
+      <div className="sub-bar">
+        <p>Search</p>
+      </div>
+      <Nav />
+    </header>
+  );
+}
+```
+
+- If you add decedent selectors to the styled component, it will only apply to that component and you don't have to worry about apply specificity or colliding with other styles.
+
+- If you want to re-use the styled component on another part of the app. You can put it in it's own file, and import it as you need it.
+- For example, in the `styles` directory. You simply `export default MyElement`.
+
+```JAVASCRIPT
+import styled from 'styled-components';
+
+const CloseButton = styled.button`
+  background: black;
+  color: white;
+  font-size: 3rem;
+  border: 0;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+`;
+
+export default CloseButton;
+```

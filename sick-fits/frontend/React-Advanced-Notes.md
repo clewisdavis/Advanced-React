@@ -409,8 +409,8 @@ export default function Header() {
 
 - If you add decedent selectors to the styled component, it will only apply to that component and you don't have to worry about apply specificity or colliding with other styles.
 
-- If you want to re-use the styled component on another part of the app. You can put it in it's own file, and import it as you need it.
-- For example, in the `styles` directory. You simply `export default MyElement`.
+- If you want to re-use the styled component on another part of the app. You can put it in it's own file, and `import` it as you need it.
+- For example, in the `styles` directory. You simply `export default CloseButton`.
 
 ```JAVASCRIPT
 import styled from 'styled-components';
@@ -427,3 +427,72 @@ const CloseButton = styled.button`
 
 export default CloseButton;
 ```
+
+- When do you put your styles in a separate file?
+- Personal preference, but to many files can get overwhelming and hard to keep track of.
+- Good practice, just define the styles in the component where you use it. And as it gets to big, or re-use the styles. Then break it out into a separate file and `export`.
+
+- Naming your styled components, to differentiate between other regular React components, you can put a `Styles` in the name. `const HeaderStyles = styled.header``;`
+
+- Styled Components is very similar to writing regular CSS, with all the benefits of being able to scope it to a component.
+
+- Note: When refreshing the page, notice the flicker when the page reloads.
+
+### Global Styles, Typography and Layout
+
+- Scoped styles are great, but sometimes you want global styles.
+- Basic stuff like colors, fonts and sizing, so you don't redefine throughout your app.
+
+- Use the `createGlobalStyle` API inside of styled components and inject it.
+- Import in your `Page.js` file. Example below...
+
+```JAVASCRIPT
+import PropTypes from 'prop-types';
+import { createGlobalStyle } from 'styled-components';
+import Header from './Header';
+
+const GlobalStyles = createGlobalStyle`
+  html {
+    --red: #ff0000;
+    --black: #393939;
+    --grey: #3a3a3a;
+    --gray: var(--grey);
+    --lightGrey: #e1e1e1;
+    --lightGrey: var(--lightGrey);
+    --offWhite: #ededed;
+    --maxWidth: 1000px;
+    --bs: 0 12px 24px 0 rgba(0,0,0,0.09);
+  }
+`;
+
+export default function Page({ children, cool }) {
+  return (
+    <div>
+      <Header />
+      <h2>I am the page component!</h2>
+      <h3>{cool}</h3>
+      {children}
+    </div>
+  );
+}
+```
+
+- On your `html` tag, good practice to set any color variables via CSS [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
+
+- To use your `GlobalStyles` you need to inject them in your `Page` component.
+
+```JAVASCRIPT
+export default function Page({ children, cool }) {
+  return (
+    <div>
+      <GlobalStyles />
+      <Header />
+      <h2>I am the page component!</h2>
+      <h3>{cool}</h3>
+      {children}
+    </div>
+  );
+}
+```
+
+- Save and refresh, and inspect your `html` element in the browser, you should see the new global styles available.

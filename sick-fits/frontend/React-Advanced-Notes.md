@@ -604,9 +604,6 @@ const GlobalStyles = createGlobalStyle`
 
 - Create a `<InnerSyles>` component and specify a max width and padding. In this example; it's the body of the page. Your design may vary.
 
-### Visualizing Route Changes
-
-- See what is happening when you change the page.
 - Full `Page` component
 
 ```JAVASCRIPT
@@ -677,3 +674,7 @@ export default function Page({ children, cool }) {
   );
 }
 ```
+
+### Visualizing Route Changes
+
+- See what is happening when you change the page.

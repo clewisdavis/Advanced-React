@@ -496,3 +496,184 @@ export default function Page({ children, cool }) {
 ```
 
 - Save and refresh, and inspect your `html` element in the browser, you should see the new global styles available.
+- For global colors to work, make sure you are using the `CSS` variable in your styles.
+
+- Global styles
+  - colors
+  - fonts
+
+- For fonts, you will be referencing static files. In the `public/static` directory
+
+```JAVASCRIPT
+const GlobalStyles = createGlobalStyle`
+
+  @font-face {
+    font-family: 'radnika_next';
+    src: url('/static/radnikanext-medium-webfont.woff2');
+    format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  html {
+    --red: #ff0000;
+    --black: #393939;
+    --grey: #3a3a3a;
+    --gray: var(--grey);
+    --lightGrey: #e1e1e1;
+    --lightGrey: var(--lightGrey);
+    --offWhite: #ededed;
+    --maxWidth: 1000px;
+    --bs: 0 12px 24px 0 rgba(0,0,0,0.09);
+  }
+`;
+```
+
+- Add you `font-family` to a new body tag within your global style.
+- TIP: For a good font stack, use the VS Code auto suggested, `--apple-system` and it will fill in a good font fall back stack for you.
+
+```CSS
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+```
+
+- Then, just put your font right in front, the on you imported.
+
+```CSS
+body {
+    font-family: 'radnika_next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+```
+
+- Adding in some resets. You can import normalize or just add some resets yourself.
+
+```JAVASCRIPT
+// Global Styles with Resets
+const GlobalStyles = createGlobalStyle`
+
+  @font-face {
+    font-family: 'radnika_next';
+    src: url('/static/radnikanext-medium-webfont.woff2');
+    format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  html {
+    --red: #ff0000;
+    --black: #393939;
+    --grey: #3a3a3a;
+    --gray: var(--grey);
+    --lightGrey: #e1e1e1;
+    --lightGrey: var(--lightGrey);
+    --offWhite: #ededed;
+    --maxWidth: 1000px;
+    --bs: 0 12px 24px 0 rgba(0,0,0,0.09);
+    --fontFamily: 'radnika_next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+  }
+
+  *, *::before, *:after {
+    box-sizing: inherit;
+  }
+
+  body {
+    font-family: var(--fontFamily);
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 2;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--black);
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  button {
+    font-family: var(--fontFamily);
+  }
+
+`;
+```
+
+- Create a `<InnerSyles>` component and specify a max width and padding. In this example; it's the body of the page. Your design may vary.
+
+### Visualizing Route Changes
+
+- See what is happening when you change the page.
+- Full `Page` component
+
+```JAVASCRIPT
+const GlobalStyles = createGlobalStyle`
+
+  @font-face {
+    font-family: 'radnika_next';
+    src: url('/static/radnikanext-medium-webfont.woff2');
+    format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  html {
+    --red: #ff0000;
+    --black: #393939;
+    --grey: #3a3a3a;
+    --gray: var(--grey);
+    --lightGrey: #e1e1e1;
+    --lightGrey: var(--lightGrey);
+    --offWhite: #ededed;
+    --maxWidth: 1000px;
+    --bs: 0 12px 24px 0 rgba(0,0,0,0.09);
+    --fontFamily: 'radnika_next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    box-sizing: border-box;
+  }
+
+  *, *::before, *:after {
+    box-sizing: inherit;
+  }
+
+  body {
+    font-family: var(--fontFamily);
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 2;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--black);
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  button {
+    font-family: var(--fontFamily);
+  }
+
+`;
+
+const InnerStyles = styled.div`
+  max-width: var(--maxWidth);
+  margin: 0 auto;
+  padding: 2rem;
+`;
+
+export default function Page({ children, cool }) {
+  return (
+    <div>
+      <GlobalStyles />
+      <Header />
+      <InnerStyles>{children}</InnerStyles>
+    </div>
+  );
+}
+```

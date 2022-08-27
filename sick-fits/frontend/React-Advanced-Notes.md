@@ -678,3 +678,43 @@ export default function Page({ children, cool }) {
 ### Visualizing Route Changes
 
 - See what is happening when you change the page.
+- When you click from page to page, the user needs to know something is happening.
+- We are going to use, a package called [nprogress](https://www.npmjs.com/package/nprogress)
+
+- Import it in your `_app.js` file
+- Import the `css`, `import 'nprogress/nprogress.css';`
+- Import `NProgress` and `next` router
+
+```JAVASCRIPT
+import NProgress from 'nprogress';
+import Router from 'next/router';
+```
+
+- Does not work for me, but here is the component.
+
+```JAVASCRIPT
+// _app.js
+import NProgress from 'nprogress';
+import Router from 'next/router';
+import Page from '../components/Page';
+
+// TODO: swap with our own
+// import 'nprogress/nprogress.css';
+import '../components/styles/nprogress.css';
+
+Router.events.on('routeChangesStart', () => NProgress.start());
+Router.events.on('routeChangesComplete', () => NProgress.done());
+Router.events.on('routeChangesError', () => NProgress.done());
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <Page>
+      <Component {...pageProps} />
+    </Page>
+  );
+}
+```
+
+### Fixed Styled Components Flicker on Server Render
+
+-

@@ -717,4 +717,63 @@ export default function MyApp({ Component, pageProps }) {
 
 ### Fixed Styled Components Flicker on Server Render
 
--
+- Error in console, `warning, Prop className did not match`. Difference between the server side and client side rendering. Caused by the random class names generated.
+- So we need it to be, consistent.
+
+- Other issue, sometimes when you reload, you get the FLOUT / FLOUC, not rendering the styles on the server for us. Flash Of Unstyled Content.
+- Fix in your `_document.js` file. It's a setting, just Google, `serverstylesheet styled-components` and will come up.
+
+- [Styled-Components, Advanced Usage.](https://styled-components.com/docs/advanced)
+- To use with Next.js, we need to hook it up to one of their hooks. Called `getInitialProps`.
+- GetInitialProps will do, wait until that method has been resolved. Before it sends the data from the server to the browser.
+
+- TIP: When you fix something and it's not taking affect. Probably a cache issue with Next.js. Stop the build `Cntl + C` and in your front end folder. In your finder, delete the .next folder. Then start your app up again, `npm run dev`.
+
+- Use these settings to get server side rendered styel sheets, in your `_document.js` file.
+
+```JAVASCRIPT
+  static getInitialProps({ renderPage }) {
+    const sheet = new ServerStyleSheet();
+    const page = renderPage(
+      (App) => (props) => sheet.collectStyles(<App {...props} />)
+    );
+    const styleTags = sheet.getStyleElement();
+    return { ...page, styleTags };
+  }
+```
+
+- Entire component
+
+```JAVASCRIPT
+import Document, { Html, Head, NextScript, Main } from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
+
+export default class MyDocument extends Document {
+  static getInitialProps({ renderPage }) {
+    const sheet = new ServerStyleSheet();
+    const page = renderPage(
+      (App) => (props) => sheet.collectStyles(<App {...props} />)
+    );
+    const styleTags = sheet.getStyleElement();
+    return { ...page, styleTags };
+  }
+
+  render() {
+    return (
+      <Html lang="en">
+        <Head />
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
+}
+```
+
+## Server Side GraphQL Development
+
+Getting into the back end.
+
+### Setting up Mongo DB

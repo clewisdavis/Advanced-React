@@ -935,4 +935,4 @@ export default config({
 - Create a method with `withAuth` to give us the ability to have auth in KeystoneJS
 - Then wrap your `config` with the `withAuth` method
 - Add a session argument
-- chris*chris
+- See the `keystone.ts` file, and recording for setting up auth

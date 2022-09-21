@@ -777,3 +777,159 @@ export default class MyDocument extends Document {
 Getting into the back end.
 
 ### Setting up Mongo DB
+
+- KeystoneJS is a layer that sits on top of a number of databases.
+- Can use MongoDB, Postcress, Prisma. For this tutorial, we are using MongoDB
+- First thing, is to setup and make a DB. For people who have never made a DB before.
+- Two options:
+  - Run MongoDB locally on your computer.
+  - Recommended hosted service, MongoDB Atlas, layer of UI and reporting/analytics
+
+- Go through setting up MongoDB Atlas on the site.
+- From your backend folder, set up a `.env` file, so your information does not go into your version control.
+- Environmental variables, in this course, rename `sample.env` to just `.env`
+  - `COOKIE SECRET` Change it to literally any other string
+  - `DATABASE_URL` Will change this to your mongo db url
+  - `STRIPE_SECRET` For checkout, not needed
+  - `MAIL_HOST` cover later in lessons
+  - `FRONTEND_URL` Port number you are running on the front end, this is important
+
+#### Connect to your Cluster
+
+- Series of settings to set this up. Best to just watch Wes do it, and follow along.
+
+### Intro to GraphQL
+
+- GraphQL, is a specification for requesting data, and pushing data to and from a server.
+- Not a library itself, then library maintainers implement that as a layer on top of the db.
+- Write queries and mutations
+- queries will pull data down from the API
+- mutations will create data or update existing data
+- Has it's own syntax, looks like JS objects.
+- You have to explicitly ask for the parts of the query you want
+
+```JAVASCRIPT
+query {
+  allProducts {
+    name
+    description
+    price
+  }
+}
+```
+
+- Running that query will bring back what you asked for. But with the data.
+- Ask for the thing that you want, along with what fields you want.
+- You can do multiple queries in one go.
+- And it's relational.
+
+- Mutations, for example reset password, or updating a user.
+
+- Little more to get set up than REST API endpoint.
+- Keystone makes this easier.
+
+### Setting up Keystone and Typescript
+
+- Create a new `keystone.ts` file in the root of your backend repo
+- import your `env` config variables. `import 'dotenv/config';`
+- Set on your local machine and we are going to deply them
+
+- Then define your db url
+
+```JAVASCRIPT
+const databaseURL =
+  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
+```
+
+- Create a base session config, so you can run keystone
+
+```JAVASCRIPT
+import 'dotenv/config';
+import { config, createSchema } from '@keystone-next/keystone/schema';
+
+const databaseURL =
+  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
+
+const sessionConfig = {
+  mxAge: 60 * 60 * 24 * 360, // how long should they stay signed in
+  secret: process.env.COOKIE_SECRET,
+};
+
+export default config({
+  server: {
+    cors: {
+      origin: [process.env.FRONTEND_URL],
+      credentials: true,
+    },
+  },
+  db: {
+    adapter: 'mongoose',
+    url: databaseURL,
+    // TODO: Add data seeding here
+  },
+  lists: createSchema({
+    // Schema items goes in here
+  }),
+  ui: {
+    // TODO: change this for roles
+    isAccessAllowed: () => true,
+  },
+  // TODO: Add session values here
+});
+
+```
+
+- Start your server, in your backend terminal, run `npm run dev` to start up your keystone server. Nothing will be displayed.
+
+### Creating our first User data type
+
+- Schema, description of what our data will look like, fields and relationships
+- Create your first schema, User schema, `schemas/User.ts`
+
+```JAVASCRIPT
+import { text, password, relationship } from '@keystone-next/fields';
+import { list } from '@keystone-next/keystone/schema';
+
+// Named Export
+export const User = list({
+  // access:
+  // ui
+  fields: {
+    name: text({ isRequired: true }),
+    email: text({ isRequired: true, isUnique: true }),
+    password: password(),
+    // TODO, add roles, cart and orders
+  },
+});
+```
+
+- Import `User` schema it to your `keystone.ts` file
+
+```JAVASCRIPT
+export default config({
+  server: {
+    cors: {
+      origin: [process.env.FRONTEND_URL],
+      credentials: true,
+    },
+  },
+  db: {
+    adapter: 'mongoose',
+    url: databaseURL,
+    // TODO: Add data seeding here
+  },
+  lists: createSchema({
+    // Schema items goes in here
+    User,
+  }),
+  ui: {
+    // TODO: change this for roles
+    isAccessAllowed: () => true,
+  },
+  // TODO: Add session values here
+});
+```
+
+### Adding Auth to application
+
+-

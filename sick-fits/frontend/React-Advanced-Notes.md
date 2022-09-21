@@ -932,4 +932,7 @@ export default config({
 
 ### Adding Auth to application
 
--
+- Create a method with `withAuth` to give us the ability to have auth in KeystoneJS
+- Then wrap your `config` with the `withAuth` method
+- Add a session argument
+- chris*chris

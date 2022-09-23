@@ -936,3 +936,48 @@ export default config({
 - Then wrap your `config` with the `withAuth` method
 - Add a session argument
 - See the `keystone.ts` file, and recording for setting up auth
+
+### Creating our Products Data Type
+
+- Create a new Products schema, new file in backend directory, `schemas/Products.ts`
+- Module #4, video 16
+
+### Uploading Product Images
+
+- Cloudinary, service for hosting media and images, any digital media
+- Create an account, for free trial
+- Going to create a new data type called Product Image
+- Set up the `.env` config with our cloudinary settings, name, key and secret
+- Then make a new file in your `schemas` directory, `ProductImage.ts`
+- Set up your cloudinary config
+
+```JAVASCRIPT
+import { cloudinaryImage } from '@keystone-next/cloudinary';
+import { text } from '@keystone-next/fields';
+import { list } from '@keystone-next/keystone/schema';
+
+export const cloudinary = {
+  cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  apiKey: process.env.CLOUDINARY_KEY,
+  apiSecret: process.env.CLOUDINARY_SECRET,
+  folder: 'sickfits',
+};
+
+export const ProductImage = list({
+  fields: {
+    image: cloudinaryImage({
+      cloudinary,
+      label: 'Source',
+    }),
+    altText: text(),
+  },
+});
+```
+
+- Now inject that into our `keystone.ts` file
+- Restart your backend, and browse to keystone. Then upload an image.
+- Should be displayed in your cloudinary dashboard.
+
+### Creating two way data relationship in Keystone
+
+-

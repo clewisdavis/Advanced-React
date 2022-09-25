@@ -980,4 +980,44 @@ export const ProductImage = list({
 
 ### Creating two way data relationship in Keystone
 
+- Relationships between data is really easy in KeystoneJS
+- Just watch the video
+
+### Inserting Seed Data
+
+- When debugging when you delete items
+- Write a script, to load with seed data
+- In your `keystone.ts` file, find your db connection and add script
+- use `onConnect()` method to inject all the items into the database.
+
+```JAVASCRIPT
+db: {
+      adapter: 'mongoose',
+      url: databaseURL,
+      // TODO: Add data seeding here
+      onConnect() {
+        console.log('Connected to the database!');
+      },
+    },
+```
+
+- Use the data in `seed-data/data.ts` as a starter
+- Then, the script in `seed-data/index.ts` to inject.
+- Set up to run with npm script
+
+```JAVASCRIPT
+db: {
+      adapter: 'mongoose',
+      url: databaseURL,
+      // TODO: Add data seeding here
+      async onConnect(keystone) {
+        console.log('Connected to the database!');
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(keystone);
+        }
+      },
+    },
+```
+
+- In package.json file, script for `seed-data`, so kill your build and run `npm run seed-data`
 -

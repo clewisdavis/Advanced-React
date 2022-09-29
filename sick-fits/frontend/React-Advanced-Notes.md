@@ -1020,4 +1020,137 @@ db: {
 ```
 
 - In package.json file, script for `seed-data`, so kill your build and run `npm run seed-data`
--
+- In Keystone app, you can look at the graphQL queries.
+
+### Setting up Apollo Client
+
+- We need a piece of software that will talk to the graphQL API and manage all that data.
+- Using Apollo GraphQL to do this.
+- Good for debugging API, you can see all the data
+- Apollo does a lot of caching, so you don't have to hit server.
+- <https://www.apollographql.com/>
+- Handles the simple things
+  - Cache
+  - Fetching / Pushing Data to our API
+- They don't handle Image upload
+
+- Lots of boiler plate stuff, just copy and paste
+
+- Wes wrote a custom scripts, in `withData.js`
+- Take the `withData` method and create an instance of Apollo and inject it in our application
+
+- Do that inside of our `_app.js` file.
+- Wrap our entire app with a provider.
+- A component that live very high within your application. Allows components that are several levels deep to access that data.
+- The Apollo client is at an app level.
+- Anywhere in your app, you can go and fetch data at any level from the Apollo Client.
+- That's what a provider does
+  
+- In our `app.js` file, we are going to wrap it with, `<ApolloProvider></ApolloProvider>`
+- Where does the data come from?
+- Export it with the `withData()` library script that Wes provided.
+
+- Best to just watch the video on setting up Apollo.
+
+### Fetching Data with hooks and Displaying it on Front-End
+
+- Pull in some data and display it.
+- Make a products component, that will fetch our data.
+
+```JAVASCRIPT
+export default function Products() {
+  return (
+    <div>
+      <p>Products Component</p>
+    </div>
+  );
+}
+```
+
+- And import it into your products page
+
+```JAVASCRIPT
+import Products from '../components/Products';
+
+export default function ProductsPage() {
+  return (
+    <div>
+      <Products />
+    </div>
+  );
+}
+```
+
+- How do we query items from our backend?
+- How do we get GraphQl queries onto the page?
+- In Keystone local site, open up the API Explorer and write a query.
+- Write a qeury for the product.
+- Name your query, good convention is all CAPS and finish it with `_QUERY`
+
+```JAVASCRIPT
+query ALL_PRODUCTS_QUERY {
+  allProducts {
+    id
+    name
+    price
+    description
+    photo {
+      id
+      image {
+        publicUrlTransformed
+      }
+    }
+  }
+}
+```
+
+- Take that and make the query in your `products.js` page.
+- Import graph ql, `import gql from "graphql-tag";`
+- `gql` will turn our text into a proper graphql query.
+- Our products page query
+
+```JAVASCRIPT
+import gql from 'graphql-tag';
+
+const ALL_PRODUCTS_QUERY = gql`
+  query ALL_PRODUCTS_QUERY {
+    allProducts {
+      id
+      name
+      price
+      description
+      photo {
+        id
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+
+export default function Products() {
+  return (
+    <div>
+      <p>Products Component</p>
+    </div>
+  );
+}
+```
+
+- Now that we have our query, we will use `hook` in order to fetch the data
+- Use the `useQuery(ALL_PRODUCTS_QUERY);` and pass in your product query variable.
+- This will pass in the data, any errors and if it's loading.
+- Destructure the data, into three variables, `data, error, loading`
+
+```JAVASCRIPT
+export default function Products() {
+  const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY);
+  console.log(data, error, loading);
+  return (
+    <div>
+      <p>Products Component</p>
+    </div>
+  );
+}
+```

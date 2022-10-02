@@ -1180,6 +1180,26 @@ export default function Products() {
   ))}
 ```
 
+- The entire component
+
+```JAVASCRIPT
+export default function Products() {
+  const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY);
+  console.log(data, error, loading);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  return (
+    <div>
+      <ProductsListStyles>
+        {data.allProducts.map((product) => (
+          <p key={product.id}>{product.name}</p>
+        ))}
+      </ProductsListStyles>
+    </div>
+  );
+}
+```
+
 - Write a styled component for your products list
 
 ```JAVASCRIPT
@@ -1188,4 +1208,31 @@ const ProductsListStyles = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 60px;
 `;
+```
+
+- Next up, make a singular products component to display more details.
+- Make a new file, `components/product` and create a component
+
+```JAVASCRIPT
+export default function Product({ product }) {
+  return (
+    <div>
+      <p>{product.name}</p>
+    </div>
+  );
+}
+```
+
+- Pass in the product via props in the `Products.js` component
+- `<Product key={product.id} product={product} />`
+
+- Set up some styles for each component
+- Import some pre-defined styles, into your `Product` component
+
+```JAVASCRIPT
+import ItemStyles from './styles/ItemStyles';
+
+export default function Product({ product }) {
+  return <ItemStyles>{product.name}</ItemStyles>;
+}
 ```

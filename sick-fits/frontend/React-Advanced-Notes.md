@@ -1154,3 +1154,38 @@ export default function Products() {
   );
 }
 ```
+
+- Set up the conditional for the `data, error, loading`
+- So when you load the page, or navigate to another page, you get a loading or if an error it will throw an error.
+
+```JAVASCRIPT
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+```
+
+- Now, `map()` over your products and display them on the page.
+
+```JAVASCRIPT
+  {data.allProducts.map((product) => (
+    <p>{product.name}</p>
+  ))}
+```
+
+- And don't forget you need to create a key when looping over data in React.
+- Key can be anything that is unique about that piece of data, `key={product.id}`
+
+```JAVASCRIPT
+  {data.allProducts.map((product) => (
+    <p key={product.id}>{product.name}</p>
+  ))}
+```
+
+- Write a styled component for your products list
+
+```JAVASCRIPT
+const ProductsListStyles = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 60px;
+`;
+```

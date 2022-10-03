@@ -1236,3 +1236,15 @@ export default function Product({ product }) {
   return <ItemStyles>{product.name}</ItemStyles>;
 }
 ```
+
+- Add your images in
+- TIP: Nested chaining in JS, you can just add a `?` after each item to check if it exist.
+
+```JAVASCRIPT
+    <ItemStyles>
+      <img
+        src={product?.photo?.image?.publicUrlTransformed}
+        alt={product.name}
+      />
+    </ItemStyles>
+```

@@ -1248,3 +1248,36 @@ export default function Product({ product }) {
       />
     </ItemStyles>
 ```
+
+- Anytime you need a little bit of functionality, create a `libs` or a `utils` folder and put your commonly used functions in it. A money converter for example.
+
+- Create a `formatMoney()` function and export it so you can formatt the dollar amounts in your apps.
+
+```JAVASCRIPT
+export default function formatMoney(amount = 0) {
+  const options = {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  };
+
+  // check if it's a clean dollar amount, % is a good way to check if you have any leftover
+  if (amount % 100 === 0) {
+    options.minimumFractionDigits = 0;
+  }
+  const formatter = Intl.NumberFormat('en-US', options);
+
+  return formatter.format(amount / 100);
+```
+
+- Then use it in your product `<PriceTag>` function. And pass in the price.
+
+```JAVASCRIPT
+  <PriceTag>{formatMoney(product.price)}</PriceTag>
+```
+
+- Now any money, with .00 cents, will get pulled off. `$34`
+
+### Fixing and Styling the Nav
+
+-

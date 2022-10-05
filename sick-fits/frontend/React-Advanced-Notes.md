@@ -1280,4 +1280,123 @@ export default function formatMoney(amount = 0) {
 
 ### Fixing and Styling the Nav
 
--
+- In `Nav.js`, import the styled component from `styles/NavStyles.js`
+- Then wrap your nav in a styled component `<NavStyles>`
+- Make any css adjustments on the component.
+
+### React Forms and Custom Hooks, long one
+
+- Now we want to push data into our GraphQL
+- Pulling data and creating data, and then update the data
+- Create a new component `components/CreateProduct.js`
+
+```JAVASCRIPT
+export default function CreateProduct() {
+  return (
+    <div>
+      <p>This is the create products page</p>
+    </div>
+  );
+}
+```
+
+- Get some forms setup, forms in React are tricky
+- Build a form, then deal with mutation of submitting and then uploading an image
+
+```JAVASCRIPT
+export default function CreateProduct() {
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input type="text" id="name" name="name" placeholder="Name" />
+      </label>
+    </form>
+  );
+}
+```
+
+- Then on the `sell.js` page, import and use the `<CreateProduct />` component.
+
+- Hook up an input to some state in React, and then use a useForm hook
+- Hooking up state to a form input
+- Create the state in your `CreateProduct` component and import `useState` from react.
+
+```JAVASCRIPT
+import { useState } from 'react';
+
+export default function CreateProduct() {
+  const [name, setName] = useState('Wes');
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input type="text" id="name" name="name" placeholder="Name" />
+      </label>
+    </form>
+  );
+}
+```
+
+- Now we have state, and whenever that state changes, it will be updated where ever it's used.
+- And if you want to use state in an input in React, on the input, `value={name}`
+
+```JAVASCRIPT
+import { useState } from 'react';
+
+export default function CreateProduct() {
+  const [name, setName] = useState('Wes');
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name"
+          value={name}
+        />
+      </label>
+    </form>
+  );
+}
+```
+
+- But get an error, you cannot interact with the form field.
+- Warning, a component is changing an uncontrolled input to be controlled.
+
+- React is very strict about, one single source of truth
+- If you have state in an input, and you change that input, you have your data in two different places. In the input and in state. So React throws an error.
+- Those can get out of sync really quickly and it's a pain
+
+- So React tells us, you need to listen for an onChange event on an input
+- And when that happens, you need to intercept what that user had typed
+- Put it back into state, and that will trigger a re-render and update the value on the input/form
+
+- To start, put an inline function on the form element. `onChange={(e) => {console.log(e)}}`
+- Now, when you try and type something in the field, it will console.log the event.
+
+```JAVASCRIPT
+
+export default function CreateProduct() {
+  const [name, setName] = useState('Wes');
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => {
+            console.log(e);
+          }}
+        />
+      </label>
+    </form>
+  );
+}
+```

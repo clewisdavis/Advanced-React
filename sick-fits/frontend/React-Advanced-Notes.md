@@ -1378,7 +1378,6 @@ export default function CreateProduct() {
 - Now, when you try and type something in the field, it will console.log the event.
 
 ```JAVASCRIPT
-
 export default function CreateProduct() {
   const [name, setName] = useState('Wes');
   return (
@@ -1399,4 +1398,125 @@ export default function CreateProduct() {
     </form>
   );
 }
+```
+
+- Use `setName()` to sync the state with the input.
+- Try and `setName(e.target.value)` to sync the input with state.
+- You can look in the React Dev tools, you can see state updating in the component
+
+```JAVASCRIPT
+export default function CreateProduct() {
+  const [name, setName] = useState('Wes');
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+      </label>
+    </form>
+  );
+}
+```
+
+- Gets out of hand, have a lot of forms
+- Sync some states from inputs, and have it all in a single object.
+- Create a use form hook,
+
+- Create a new `lib` file to handle forms, `lib/useForm.js`
+- Create a `useForm` function and pass in some initial state, empty.
+
+```JAVASCRIPT
+export default function useForm(initial = {}) {
+    
+}
+```
+
+- Our own custom hook that we created `useForm`
+- Create a state object for our inputs
+- Allow us to use as many form inputs as we want
+
+```JAVASCRIPT
+export default function useForm(initial = {}) {
+  //create a state object for inputs
+  const [inputs, setInputs] = useState(initial);
+}
+```
+
+- Create a `handleChange()` function and pass in the event
+- Going to have a couple differ values
+- Create a state object for our inputs
+
+- When you are dealing with an object with multiple pieces of state in a object
+- Set the entire thing to be an object
+- Copy the existing state
+
+```JAVASCRIPT
+function handleChange(e) {
+  setInputs({
+    // copy the existing state
+    ...inputs,
+    name: e.target.value
+  })
+
+}
+```
+
+- Make the name of the form element dynamic
+
+```JAVASCRIPT
+function handleChange(e) {
+  setInputs({
+    // copy the existing state
+    ...inputs,
+    // make name dynamic, pass it in
+    [e.target.name]: e.target.value,
+  })
+
+}
+```
+
+- If you want to use the things in the custom hook, you have to return them
+
+```JAVASCRIPT
+return {
+  inputs,
+  handleChange,
+}
+```
+
+- The hook looks like this
+
+```JAVASCRIPT
+import { useState } from 'react';
+
+export default function useForm(initial = {}) {
+  // create a state object for our inputs
+  const [inputs, setInputs] = useState(initial);
+
+  // make a function handleChange, passed into the onChange handler on the input
+  function handleChange(e) {
+    setInputs({
+      // copy the existing state
+      ...inputs,
+      // have to make it dynamic, so you can pass in the name of the form element
+      [e.target.name]: e.target.value,
+    });
+  }
+}
+
+// return the things we want to surface from this custom hook
+
+return {
+  inputs,
+  handleChange,
+};
 ```

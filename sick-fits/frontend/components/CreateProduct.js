@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import useForm from '../lib/useForm';
 
 export default function CreateProduct() {
-  const [name, setName] = useState('Wes');
+  const { inputs, handleChange } = useForm({
+    name: 'Nice Car',
+    price: 234,
+    description: 'Awesome car',
+  });
   return (
     <form>
       <label htmlFor="name">
@@ -11,12 +15,25 @@ export default function CreateProduct() {
           id="name"
           name="name"
           placeholder="Name"
-          value={name}
-          onChange={(e) => {
-            console.log(e);
-          }}
+          value={inputs.name}
+          onChange={handleChange}
         />
       </label>
+
+      {/* <label htmlFor="price">
+        Price
+        <input
+          type="text"
+          id="price"
+          name="price"
+          placeholder="price"
+          value={price}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setName(e.target.value);
+          }}
+        />
+      </label> */}
     </form>
   );
 }

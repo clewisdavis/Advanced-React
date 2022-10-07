@@ -20,20 +20,17 @@ export default function CreateProduct() {
         />
       </label>
 
-      {/* <label htmlFor="price">
+      <label htmlFor="price">
         Price
         <input
-          type="text"
+          type="number"
           id="price"
           name="price"
           placeholder="price"
-          value={price}
-          onChange={(e) => {
-            console.log(e.target.value);
-            setName(e.target.value);
-          }}
+          value={inputs.price}
+          onChange={handleChange}
         />
-      </label> */}
+      </label>
     </form>
   );
 }

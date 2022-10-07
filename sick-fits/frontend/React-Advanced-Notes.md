@@ -1493,7 +1493,7 @@ return {
 }
 ```
 
-- The hook looks like this
+- The hook looks like this, in the `useForm` library
 
 ```JAVASCRIPT
 import { useState } from 'react';
@@ -1519,4 +1519,112 @@ return {
   inputs,
   handleChange,
 };
+```
+
+- On your create products, you can now use the `useForm` hook.
+- `const { inputs, handleChange } = useForm();`, importing an object and destructing an object an and handleChange values
+
+- Then we update our form element
+- `value={inputs.name}`
+- and update the handle change to use `handChange` method
+- `onChange={handleChange}`
+- Set an initial value for the `useForm()`
+
+```JAVASCRIPT
+const { inputs, handleChange } = useForm({
+    name: 'Nice Car',
+    price: 234,
+    description: 'Awesome car',
+  });
+```
+
+- The full component
+
+```JAVASCRIPT
+import useForm from '../lib/useForm';
+
+export default function CreateProduct() {
+  const { inputs, handleChange } = useForm({
+    name: 'Nice Car',
+    price: 234,
+    description: 'Awesome car',
+  });
+  return (
+    <form>
+      <label htmlFor="name">
+        Name
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name"
+          value={inputs.name}
+          onChange={handleChange}
+        />
+      </label>
+    </form>
+  );
+}
+```
+
+- Check to see if this works, go to React Dev tools and look at the `CreateProduct` component, hook. Change the value of input and watch it update.
+
+- Now you can reuse that for other forms
+
+```JAVASCRIPT
+      <label htmlFor="price">
+        Price
+        <input
+          type="number"
+          id="price"
+          name="price"
+          placeholder="price"
+          value={inputs.price}
+          onChange={handleChange}
+        />
+      </label>
+```
+
+- Note, inputs as a number, once you change the value it converts from a number to a string. We need it to always be a string.
+
+- We need to add a little more to our `lib/useForm` package to convert.
+- Inside our `handleChange` function, destructure the `e.target`
+- And then write a condition to convert to integer.
+
+```JAVASCRIPT
+    let { value, name, type } = e.target;
+    if (type === 'number') {
+      value = parseInt(value);
+    }
+```
+
+- Now when you change the value of the price number input, it's being updated as a number.
+
+```JAVASCRIPT
+import { useState } from 'react';
+
+export default function useForm(initial = {}) {
+  // create a state object for our inputs
+  const [inputs, setInputs] = useState(initial);
+
+  // make a function handleChange, passed into the onChange handler on the input
+  function handleChange(e) {
+    let { value, name, type } = e.target;
+    if (type === 'number') {
+      value = parseInt(value);
+    }
+    setInputs({
+      // copy the existing state
+      ...inputs,
+      // have to make it dynamic, so you can pass in the name of the form element
+      [name]: value,
+    });
+  }
+  // return the things we want to surface from this custom hook
+
+  return {
+    inputs,
+    handleChange,
+  };
+}
 ```

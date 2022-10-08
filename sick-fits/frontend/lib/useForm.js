@@ -20,10 +20,25 @@ export default function useForm(initial = {}) {
       [name]: value,
     });
   }
-  // return the things we want to surface from this custom hook
 
+  // reset the form
+  function resetForm() {
+    setInputs(initial);
+  }
+
+  // clear the form, how do you loop over and set them to be empty?
+  function clearForm() {
+    const blankState = Object.fromEntries(
+      Object.entries(inputs).map(([key, value]) => [key, ''])
+    );
+    setInputs(blankState);
+  }
+
+  // return the things we want to surface from this custom hook
   return {
     inputs,
     handleChange,
+    resetForm,
+    clearForm,
   };
 }

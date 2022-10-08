@@ -1628,3 +1628,84 @@ export default function useForm(initial = {}) {
   };
 }
 ```
+
+- Reset the form to the initial state
+
+```JAVASCRIPT
+  function resetForm() {
+    setInputs(initial);
+  }
+```
+
+- And Clear the form, how do you loop over the object, and set them to be nothing?
+- If you have an object, you can wrap it in an `Object.entries(yourObject)` and it will create an array of those items
+
+```JAVASCRIPT
+const person = { name: "chris", price: 200, age: 43, job: "design"}
+Object.entries(person);
+```
+
+- Loop over the keys and set them to be nothing, blank
+
+```JAVASCRIPT
+Object.entries(person).map(item => item[1])
+```
+
+- You can destructure and return a key or value
+
+```JAVASCRIPT
+Object.entries(person).map((key, value) => key)
+```
+
+```JAVASCRIPT
+Object.entries(person).map((key, value) => value)
+```
+
+- Return with not value
+
+```JAVASCRIPT
+Object.entries(person).map((key, value) => [key, ''])
+```
+
+- How do we turn that back into an object?
+- Wrap it in an `Object.fromEntries()`
+
+```JAVASCRIPT
+Object.fromEntries(Object.entries(person).map((key, value) => [key, '']));
+```
+
+- Basically turn it into an array with `Object.entries`, then turn it back with `Object.fromEntries`
+
+- Then you have to `setInputs(blankState)`
+
+```JAVASCRIPT
+  // clear the form, how do you loop over and set them to be empty?
+  function clearForm() {
+    const blankState = Object.fromEntries(
+      Object.entries(inputs).map(([key, value]) => [key, ''])
+    );
+    setInputs(blankState);
+  }
+```
+
+- Surface that `clearForm` function in your `return` statement on the component
+
+```JAVASCRIPT
+  return {
+    inputs,
+    handleChange,
+    resetForm,
+    clearForm,
+  };
+```
+
+- You can even hook that up to a button, in your `CreateProducts` component
+
+```JAVASCRIPT
+      <button type="button" onClick={clearForm}>
+        Clear Form
+      </button>
+      <button type="button" onClick={resetForm}>
+        Reset Form
+      </button>
+```

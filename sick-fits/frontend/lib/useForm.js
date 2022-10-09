@@ -34,11 +34,16 @@ export default function useForm(initial = {}) {
     setInputs(blankState);
   }
 
+  function alertMe() {
+    console.log('You did it!');
+  }
+
   // return the things we want to surface from this custom hook
   return {
     inputs,
     handleChange,
     resetForm,
     clearForm,
+    alertMe,
   };
 }

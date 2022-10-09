@@ -1056,6 +1056,7 @@ db: {
 
 - Pull in some data and display it.
 - Make a products component, that will fetch our data.
+- Custom React Hook and dealing with state lesson.
 
 ```JAVASCRIPT
 export default function Products() {
@@ -1708,4 +1709,100 @@ Object.fromEntries(Object.entries(person).map((key, value) => [key, '']));
       <button type="button" onClick={resetForm}>
         Reset Form
       </button>
+```
+
+### Hooking up our File input and Form Styles
+
+- Use the `Form.js` styles, and add the `<Form>` component to the `<CreateProduct>` component.
+- Disable form element, do it on the fieldset, to disable. You need this for when making a call to the backend, when charging credit card etc..
+- Need to disable while we are doing things on the backend so user cannot start adding things.
+- TIP: To disable everything, just wrap your form in a `fieldset`, and add the `disabled` attribute.
+- Can also set an `aria-busy` attribute, to show a loading state vs. using a regular class. That way it's accessible and styled. Without having to add/remove classes.
+
+- Basic form styles, with loading with `aria`
+
+```JAVASCRIPT
+import styled, { keyframes } from 'styled-components';
+
+const loading = keyframes`
+  from {
+    background-position: 0 0;
+    /* rotate: 0; */
+  }
+
+  to {
+    background-position: 100% 100%;
+    /* rotate: 360deg; */
+  }
+`;
+
+const Form = styled.form`
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.02);
+  border: 5px solid white;
+  padding: 20px;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 600;
+  label {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid black;
+    &:focus {
+      outline: 0;
+      border-color: var(--red);
+    }
+  }
+  button,
+  input[type='submit'] {
+    width: auto;
+    background: red;
+    color: white;
+    border: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+    &::before {
+      height: 10px;
+      content: '';
+      display: block;
+      background-image: linear-gradient(
+        to right,
+        #ff3019 0%,
+        #e2b04a 50%,
+        #ff3019 100%
+      );
+    }
+    &[aria-busy='true']::before {
+      background-size: 50% auto;
+      animation: ${loading} 0.5s linear infinite;
+    }
+  }
+`;
+
+export default Form;
+```
+
+- Add an image upload field.
+
+```JAVASCRIPT
+  <label htmlFor="image">
+    Image
+    <input type="file" id="image" name="image" onChange={handleChange} />
+  </label>
 ```

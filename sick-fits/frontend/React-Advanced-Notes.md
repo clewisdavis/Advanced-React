@@ -1806,3 +1806,40 @@ export default Form;
     <input type="file" id="image" name="image" onChange={handleChange} />
   </label>
 ```
+
+- Add a description field.
+
+```JAVASCRIPT
+  <label htmlFor="description">
+    Description
+    <textarea
+        id="description"
+        name="description"
+        placeholder="Description"
+        value={inputs.description}
+        onChange={handleChange}
+    />
+  </label>
+```
+
+- Now, Listen for the click on the add product button
+- In the `<Form>` tag, listen for the onSubmit.
+- TIP: If your event is small enough, you can just write it as an inline function on the Component.
+
+```JAVASCRIPT
+<Form onSubmit={(e) => {
+  e.preventDefault();
+  console.log('Submitted'):
+}}>
+  <fieldset>
+    <label>Form here</label>
+  </fieldset>
+</Form>
+```
+
+- The `e.preventDefault()` will stop the default button behavior from putting it in the url and refreshing the page.
+- And add a required to the image form element.
+
+### 24 - Creating Products via our Mutations
+
+- Sending data and hooking up to GraphQL API

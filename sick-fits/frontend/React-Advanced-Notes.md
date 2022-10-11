@@ -1843,3 +1843,188 @@ export default Form;
 ### 24 - Creating Products via our Mutations
 
 - Sending data and hooking up to GraphQL API
+- Create a mutation in your GraphQL API explorer, from KeystoneJS
+
+- Figure out what mutation we need, in your API explorer
+
+```JAVASCRIPT
+mutation {
+  createProduct(data:{
+    name: "Sample Product",
+    description: "Test",
+    price: 100
+  }) {
+    id
+    price
+    description
+  }
+}
+```
+
+- `createProduct()` is one of the mutations available to us.
+- And pass in the data you want, pass as an argument to the function.
+
+```JAVASCRIPT
+createProduct(data:{
+    name: "Sample Product",
+    description: "Test",
+    price: 100
+  })
+```
+
+- Then from that, you ask for the return data
+- Says go and make this, and when you are done, bring me back the data from the database
+
+```JAVASCRIPT
+mutation {
+  createProduct(data:{
+    name: "Sample Product",
+    description: "Test",
+    price: 100
+  }) {
+    id
+    price
+    description
+  }
+}
+```
+
+- Then run it in GraphQL API explorer
+- And to to your KeystoneJS, and you can see your product.
+
+- 💡 This is what we will be doing with the form, instead of running it manually in the API explorer.
+
+#### Make your mutation
+
+- In `<CreateProducts />` component, you have to make your mutation.
+
+```JAVASCRIPT
+const CREATE_PRODUCT_MUTATION = gql``;
+```
+
+- And import `gql` into your file.
+- Inside of your `gql` put in your mutation query you ran earlier in the API explorer.
+
+```JAVASCRIPT
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation {
+    createProduct(
+      data: {
+        name: "Sample Product"
+        description: "Test"
+        price: 100
+        status: "AVAILABLE"
+      }
+    ) {
+      id
+      price
+      description
+    }
+  }
+`;
+```
+
+- However we need to make this more flexible and pass in dynamic data, variables.
+- Name the mutation, same as the `const`
+- And create the variables, which ones are being passed in and what the type is.
+- `$name: String!`, the ! is how you tell graphql something is required.
+
+```JAVASCRIPT
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    # Which variables are getting passed in? And what type?
+    $name: String!
+    $description: String!
+    $price: Int!
+    $image: Upload
+  ) {
+    createProduct(
+      data: {
+        name: "Sample Product"
+        description: "Test"
+        price: 100
+        status: "AVAILABLE"
+      }
+    ) {
+      id
+      price
+      description
+    }
+  }
+`;
+```
+
+- Then inside your `createProduct()` mutation, you can use the variables.
+
+💡Try your hardest to NOT think of this as JS, this is GraphQL notation. Everything inside fo the `gql`.
+
+- Can't use JS variables inside of `gql`, try and keep it a clean graphql mutation.
+- Use the gql variables in your `createProduct()` mutation.
+
+```JAVASCRIPT
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    # which variables are getting passed in? And what type are they?
+    $name: String!
+    $description: String!
+    $price: Int!
+    $image: Upload
+  ) {
+    createProduct(
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        status: "AVAILABLE"
+      }
+    ) {
+      id
+      price
+      description
+    }
+  }
+`;
+```
+
+- The photo is unique relationship
+- `photo: { create: { image: $image, altText: $name } }`
+- Tell it to create a relationship with this product, and create the item and use the `image` and `altText` for that.
+- Full mutation with photo
+
+```JAVASCRIPT
+const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    # which variables are getting passed in? And what type are they?
+    $name: String!
+    $description: String!
+    $price: Int!
+    $image: Upload
+  ) {
+    createProduct(
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        status: "AVAILABLE"
+        photo: { create: { image: $image, altText: $name } }
+      }
+    ) {
+      id
+      price
+      description
+      name
+    }
+  }
+`;
+```
+
+#### Hooking it up to our form
+
+- Now you need to hook up your mutation inside of your `onSubmit` on the `<Form>`
+- You will use the mutation hook, inside our component, `useMutation()`
+- `useMutation()` comes from our apollo client.
+
+- Inside of your `CreateProduct()` function
+- `const payload = useMutation();`
+- and pass it in your mutation `CREATE_PRODUCT_MUTATION`
+-

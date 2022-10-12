@@ -2027,4 +2027,50 @@ const CREATE_PRODUCT_MUTATION = gql`
 - Inside of your `CreateProduct()` function
 - `const payload = useMutation();`
 - and pass it in your mutation `CREATE_PRODUCT_MUTATION`
--
+
+```JAVASCRIPT
+const payload = useMutation(CREATE_PRODUCT_MUTATION, {
+    variables: inputs,
+  });
+```
+
+- Destructure the payload, it's an array that it returns
+- The first thing it returns is the `createProduct` function that will run the mutation
+- The second thing, is the same thing as the graphql query.
+- `{loading, error, data}`, loading state, error state, and any data that gets returned from the mutation.
+
+```JAVASCRIPT
+const [createProduct, {loading, error, data}] = useMutation(CREATE_PRODUCT_MUTATION, {
+    variables: inputs,
+  });
+```
+
+- If you console.log the `createProduct()`, this is a function that is bound to the entire mutation, and when you run it with the arguments, it will go off to the back end and run it for us.
+- It's an asynchronous function, so we can call it. In our `<Form onSubmit={}>` function.
+
+- Since it's an asynchronous function, you need to make it as that.
+- Mark the `onSubmit` function as `async`, allow to `await` so it calls the backend and comes back.
+
+```JAVASCRIPT
+<Form
+    onSubmit={async (e) => {
+      e.preventDefault();
+      console.log(inputs);
+      // submit the input fields to the backend
+      const response = await createProduct();  
+    }}
+>
+```
+
+- 💡Important: The `createProduct()` mutation function, we have already pre-loaded it with our variables.
+- You can either specify the variables when you define the mutation, if you know what they are.
+- Or you can pass them into your `await createProduct()` function if you don't know them.
+
+- Take care of your `loading` and `disabled` state.
+- In your `<fieldset>` add a disabled state with the the loading parameter. If it is loading, it will disable the entire form.
+
+```JAVASCRIPT
+<fieldset disabled={loading} aria-busy={loading}>
+```
+
+- and `error` state, if their is an error, we need to show the user.

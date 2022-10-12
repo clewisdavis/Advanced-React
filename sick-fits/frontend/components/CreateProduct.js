@@ -35,14 +35,22 @@ export default function CreateProduct() {
     price: 234,
     description: 'Awesome car description',
   });
-  const payload = useMutation(CREATE_PRODUCT_MUTATION, {
-    variables: inputs,
-  });
+  const [createProduct, { loading, error, data }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: inputs,
+    }
+  );
+  console.log(createProduct);
   return (
     <Form
-      onSubmit={(e) => {
+      disabled={loading}
+      onSubmit={async (e) => {
         e.preventDefault();
         console.log(inputs);
+        // submit the input fields to the backend
+        const res = await createProduct();
+        console.log(res);
       }}
     >
       <fieldset>

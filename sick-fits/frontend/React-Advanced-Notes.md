@@ -2074,3 +2074,26 @@ const [createProduct, {loading, error, data}] = useMutation(CREATE_PRODUCT_MUTAT
 ```
 
 - and `error` state, if their is an error, we need to show the user.
+- With the course, Wes provided a Error component, take in the error and shows to user.
+- Before your `<fieldset>` put in the `<DisplayError />` component and then pass in the prop `error={error}`
+- And this component will check, if there is an error, it will render out. Nut if not, will just be `null`
+
+#### Try and upload a form
+
+- Use your form to add a product
+- What's going on
+  - Disabled the form on submit
+  - The loading indicator turned to on
+  - We `await` the `createProduct()`
+  - Came back with a response and got the data, id, name and price
+  - Now, you can go to your backend, KeystoneJS, and see the new product
+  - And the image
+  - Try and make an error, test the error
+
+- Delete the `name` to test out the error state
+
+- Finish up after it's done
+- Clear the form after submit
+- Add `clearForm()` function to your `<Form />` component
+
+### 25 - Fetching queries after successful mutation

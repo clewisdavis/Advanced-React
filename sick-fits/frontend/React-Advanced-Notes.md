@@ -2097,3 +2097,52 @@ const [createProduct, {loading, error, data}] = useMutation(CREATE_PRODUCT_MUTAT
 - Add `clearForm()` function to your `<Form />` component
 
 ### 25 - Fetching queries after successful mutation
+
+- On your home page, it renders the cached products, and doesn't show the product you just added, until you refresh.
+
+- In Apollo,  you have options to get fresh data:
+
+- 1. Modify the cache directly, the `allProducts` query. Manually inject it into the cache and it would update itself.
+- 2. Tell Apollo behind the scenes, go to server and re-fetch the query. Go to the network and re-fresh the cache.
+
+- Update the query, it lives in the `Products.js` component. Export the query in the file so you can use it.
+
+```JAVASCRIPT
+export const ALL_PRODUCTS_QUERY = gql`
+  query ALL_PRODUCTS_QUERY {
+    allProducts {
+      id
+      name
+      price
+      description
+      photo {
+        id
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+```
+
+- Import it in your `CreateProducts.js` file so you can use it.
+- Then, inside your `useMutation()` function add the `refetchQueries` and pass it your `ALL_PRODUCTS_QUERY`.
+
+```JAVASCRIPT
+  const [createProduct, { loading, error, data }] = useMutation(
+    CREATE_PRODUCT_MUTATION,
+    {
+      variables: inputs,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
+    }
+  );
+```
+
+- Sequence, when the mutation fires off and we successfully come back, re-fetch the `ALL_PRODUCTS_QUERY`.
+- Go and add a new product, then navigate to the home page, and it will immediately show up. It went to the network and re-ran that query for us.
+- 💡That is referred to as, **re-fetching our query**.
+
+### 26 - Change pages in Next.js, after product creation
+
+-

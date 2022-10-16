@@ -2179,3 +2179,33 @@ export const ALL_PRODUCTS_QUERY = gql`
 - CRUD, Create, Read, Update, Delete
 - If you have a database, then you are doing these things
 - Sometimes, it's CRUDS, the S is for Subscribe.
+
+- Now, Next.js has file based routing, able to put the product ID in the url.
+- Or you can create a slug for the product to look it up.
+- In your pages directory, make a new folder and file `pages/product/[id].js`
+- Use the ID to look it up in the db
+
+- The square brackets is specific to next JS.
+- The `[]`, use this template for anything that matches this layout.
+- In the `[id].js` file, add a `<SingleProduct>` component.
+
+```JAVASCRIPT
+export default function SingleProduct() {
+  return <p>Hey, I am a single product</p>;
+}
+```
+
+- Now, after you create a product, it routes to the `<SingleProduct>` page. Not sure why, very confusing.
+- In your React Dev tools, you can see we now have the `id` being supplied to us.
+- Why?
+- Because we named the file `[id].js`, what that does it says, match anything with this url `product/whatever` and give me that whatever in a query param, and we have access to it.
+
+- 🤔, not so sure
+
+- Pass your `id` into `<SingleProduct>` component, destructure.
+
+```JAVASCRIPT
+export default function SingleProduct({ query }) {
+  return <p>Hey, I am a single product {query.id}</p>;
+}
+```

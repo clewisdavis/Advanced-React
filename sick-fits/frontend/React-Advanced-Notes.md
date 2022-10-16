@@ -2145,4 +2145,37 @@ export const ALL_PRODUCTS_QUERY = gql`
 
 ### 26 - Change pages in Next.js, after product creation
 
--
+- Declaritive programming, you figure out what you want and it will figure out the logic behind the scenes to make it work.
+- Sometimes you want to do it imperative, do it programmatically on the page.
+- Next.js has API for that.
+
+- After we create our page. We want to programmatically route to another page.
+- Import `import Router from 'next/router';`
+- And on our `<Form onSubmit={}>` we add `Router.push()`
+
+```JAVASCRIPT
+    <Form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        // submit the input fields to the backend
+        const res = await createProduct();
+        clearForm();
+        // Go to that products page
+        Router.push({
+          pathname: `/product/${res.data.createProduct.id}`,
+        });
+      }}
+    >
+```
+
+- We are going to take the returned id, and simply go to that page.
+- If you need to, you can pass query parameters, part of Next.js
+
+- Now, when you add a product, it routes to the product page, but we get a 404
+- Because we have yet to build that page.
+
+### 27 - Displaying Single Items, Routing and SEO
+
+- CRUD, Create, Read, Update, Delete
+- If you have a database, then you are doing these things
+- Sometimes, it's CRUDS, the S is for Subscribe.

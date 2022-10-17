@@ -2209,3 +2209,82 @@ export default function SingleProduct({ query }) {
   return <p>Hey, I am a single product {query.id}</p>;
 }
 ```
+
+- Now your id shows up on the UI.
+- Copy that, and go to your Keystone.js/API Explorer and let's write a query to grab that single item.
+
+- In your graphQL explorer, write the query, remember, this is not JS, it's graphQL syntax.
+- You can only query single items base don unique fields, `Product()` just returns one item.
+
+```JAVASCRIPT
+query {
+  Product(where: {
+    id: "634c1168403cd42f6a5519df"
+  })
+}
+```
+
+- Query the Product, where the id is equal to "634c1168403cd42f6a5519df"
+- And when that comes back, we ask for, name, price, description
+
+```JAVASCRIPT
+query {
+  Product(where: {
+    id: "634c1168403cd42f6a5519df"
+  }) {
+    name
+    price
+    description
+  }
+}
+```
+
+- If you want to return something based on a name or whatever string. Use `allProducts` as the query.
+- The difference between `Product()` and `allProducts()` is returning one vs. multiple.
+- IF you are only returning one item from a query, it must use a unique field.
+
+- To filter by everything, you use `allProducts()`.
+
+```JAVASCRIPT
+query {
+  Product(where: {
+    id: "634c1168403cd42f6a5519df"
+  }) {
+    name
+    price
+    description
+  }
+  
+  allProducts(where:{
+    name_contains_i: "vintage"
+  }) {
+    name
+    price
+  }
+}
+```
+
+- Useful for when you want to find an item based on something that is not unique.
+- OR when you want to build a search
+
+- For now, we are only using the one. Copy that `query` and put in your `[id].js` page.
+
+```JAVASCRIPT
+import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
+
+const SINGLE_ITEM_QUERY = gql`
+  query {
+    Product(where: { id: "634c1168403cd42f6a5519df" }) {
+      name
+      price
+      description
+    }
+  }
+`;
+
+export default function SingleProduct({ query }) {
+  const { data, loading, error } = useQuery();
+  return <p>Hey, I am a single product {query.id}</p>;
+}
+```

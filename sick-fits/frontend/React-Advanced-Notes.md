@@ -2288,3 +2288,99 @@ export default function SingleProduct({ query }) {
   return <p>Hey, I am a single product {query.id}</p>;
 }
 ```
+
+- `console.log()` the `console.log({ data, loading, error });` so you can see it loading. When it's fetching it from the server, you will see `loading: true`.
+- 💡TIP: if you put your console.log in `{}` it will return it as an object so you can see what's associated with it.
+
+#### Move the query to it's own component
+
+- Now, we want to move the query to it's own component.
+- Make a new component `components/SingleProduct.js`
+
+- Move the graphql query from the `[id].js` page to the `SingleProducts` page.
+- And the `const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY);` into the function.
+
+```JAVASCRIPT
+import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
+
+const SINGLE_ITEM_QUERY = gql`
+  query {
+    Product(where: { id: "634c1168403cd42f6a5519df" }) {
+      name
+      price
+      description
+    }
+  }
+`;
+
+export default function SingleProduct({ id }) {
+  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY);
+  return <p>Single Product</p>;
+}
+```
+
+- Import `<SingleProduct>` into your `[id].js` to use it. And pass in the `query.id`
+
+```JAVASCRIPT
+import SingleProduct from '../../components/SingleProduct';
+
+export default function SingleProductPage({ query }) {
+  return <SingleProduct id={query.id} />;
+}
+```
+
+- Now we create a single product component, and all it needs is an ID and we can display what we want.
+
+```JAVASCRIPT
+import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
+import DisplayError from './ErrorMessage';
+
+const SINGLE_ITEM_QUERY = gql`
+  query {
+    Product(where: { id: "634c1168403cd42f6a5519df" }) {
+      name
+      price
+      description
+    }
+  }
+`;
+
+export default function SingleProduct({ id }) {
+  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <DisplayError error={error} />;
+  return (
+    <div>
+      <h2>{data.Product.name}</h2>
+    </div>
+  );
+}
+```
+
+- We need to make the `id` dynamic, above it's hard coded in the `SingleProduct` component
+
+```JAVASCRIPT
+export default function SingleProduct({ id }) {
+  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
+    variables: {
+      id,
+    },
+  });
+  if (loading) return <p>Loading...</p>;
+  if (error) return <DisplayError error={error} />;
+  return (
+    <div>
+      <h2>{data.Product.name}</h2>
+    </div>
+  );
+}
+```
+
+- Now, you can use that component in another part of your app if like.
+- For example, `<SingleProduct id="63495a61403cd42f6a5519d9" />` you can just pass in the id, and it will render.
+
+#### Styling on the single product
+
+- Add some more styling to the single item product.

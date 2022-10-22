@@ -2384,3 +2384,125 @@ export default function SingleProduct({ id }) {
 #### Styling on the single product
 
 - Add some more styling to the single item product.
+- Start to pull in the data from your graphQL query.
+
+- Make a variable, `Product` so easier to write. `const { Product } = data;`
+- This is pulling from your graphql query. If you `console.log(Product)`, you will see the data object come back.
+- You can get to each item, for example to display the name of the product.
+
+```JAVASCRIPT
+<h2>{Product.name}</h2>
+```
+
+- Single product component
+
+```JAVASCRIPT
+import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
+import DisplayError from './ErrorMessage';
+
+const SINGLE_ITEM_QUERY = gql`
+  query SINGLE_ITEM_QUERY($id: ID!) {
+    Product(where: { id: $id }) {
+      name
+      price
+      description
+      id
+      photo {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+
+export default function SingleProduct({ id }) {
+  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
+    variables: {
+      id,
+    },
+  });
+  if (loading) return <p>Loading...</p>;
+  if (error) return <DisplayError error={error} />;
+  const { Product } = data;
+  console.log(Product);
+  return (
+    <div>
+      <img
+        src={Product.photo.image.publicUrlTransformed}
+        alt={Product.photo.alt}
+      />
+      <div className="details">
+        <h2>{Product.name}</h2>
+        <p>{Product.description}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+- Define the title tag in your Next.js application.
+- Just embed the `<Head />` tag inside your component. Make sure to import it.
+- `import Head from 'next/head';`
+
+- Anything that gets put in the head, will get injected into the document.
+
+```JAVASCRIPT
+  return (
+    <div>
+      <Head>
+        <title>Sick Fits | {Product.name}</title>
+      </Head>
+      <img
+        src={Product.photo.image.publicUrlTransformed}
+        alt={Product.photo.alt}
+      />
+      <div className="details">
+        <h2>{Product.name}</h2>
+        <p>{Product.description}</p>
+      </div>
+    </div>
+  );
+```
+
+- Now, create some styles for the `SingleProducts` component.
+
+```JAVASCRIPT
+const ProductStyles = styled.div`
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  max-width: var(--maxWidth);
+  justify-content: center;
+  align-items: top;
+  gap: 2rem;
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+`;
+```
+
+- The component
+
+```JAVASCRIPT
+  return (
+    <ProductStyles>
+      <Head>
+        <title>Sick Fits | {Product.name}</title>
+      </Head>
+      <img
+        src={Product.photo.image.publicUrlTransformed}
+        alt={Product.photo.alt}
+      />
+      <div className="details">
+        <h2>{Product.name}</h2>
+        <p>{Product.description}</p>
+      </div>
+    </ProductStyles>
+  );
+```
+
+### Working with Mutations

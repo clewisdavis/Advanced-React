@@ -2506,3 +2506,45 @@ const ProductStyles = styled.div`
 ```
 
 ### Working with Mutations
+  
+- Pass in the data via query parameters
+- Make a new page, in `pages/update.js`
+
+```JAVASCRIPT
+import UpdateProduct from '../components/UpdateProduct';
+
+export default function UpdatePage() {
+  return (
+    <div>
+      <UpdateProduct />
+    </div>
+  );
+}
+```
+
+- Then make a new component `UpdateProduct` and import into the `update` page
+
+```JAVASCRIPT
+export default function UpdateProduct() {
+  return <p>Update Product</p>;
+}
+```
+
+- Inside `Products.js` file, create a button to edit and delete items
+- In Next.js, pass in the id via query param
+- Do this in the `Product.js` file
+
+```JAVASCRIPT
+      <div className="buttonList">
+        <Link
+          href={{
+            pathname: 'update',
+            query: {
+              id: product.id,
+            },
+          }}
+        >
+          Edit 📝
+        </Link>
+      </div>
+```

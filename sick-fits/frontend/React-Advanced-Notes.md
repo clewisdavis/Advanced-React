@@ -2508,6 +2508,7 @@ const ProductStyles = styled.div`
 ### Working with Mutations
   
 - Pass in the data via query parameters
+- Which is the `?id=5345345` at the end of url
 - Make a new page, in `pages/update.js`
 
 ```JAVASCRIPT
@@ -2533,6 +2534,10 @@ export default function UpdateProduct() {
 - Inside `Products.js` file, create a button to edit and delete items
 - In Next.js, pass in the id via query param
 - Do this in the `Product.js` file
+- In the `href` pass in options
+  - `pathname: 'update"` is the page `update.js`
+  - `query: { id: product.id}` that is passed in via the url
+  - The a little edit and icon
 
 ```JAVASCRIPT
       <div className="buttonList">
@@ -2548,3 +2553,44 @@ export default function UpdateProduct() {
         </Link>
       </div>
 ```
+
+- Now, when you go to the homeapge, and click edit.
+- Notice the id is being passed in via query param
+- Another way to do url's in Next.js
+
+- Now, create the form to update the product.
+- In `UpdateProduct.js` do this
+  - 1. We need to get the existing product
+  - 2. We need to get the mutation to update the product
+  - 3. We need the form to handle the updates
+
+- 1. Have to go to our `update.js` page to get the information from the url
+  - And that data is being passed in via `props.query`
+  - Just destructure that in your `UpdatePage` component
+  - And pass it down via props
+
+```JAVASCRIPT
+import UpdateProduct from '../components/UpdateProduct';
+
+export default function UpdatePage({ query }) {
+  return (
+    <div>
+      <UpdateProduct id={query.id} />
+    </div>
+  );
+}
+```
+
+- Then we go into our `UpdateProducts.js` component and bring it in, destructure it, so we can use in our component.
+- And display on the page so you can see if being passed in properly
+
+```JAVASCRIPT
+export default function UpdateProduct({ id }) {
+  // 1. need to get the exiting product
+  // 2. need to get the mutation to update the product
+  // 3. need the form to handle the updates
+  return <p>Update Product {id}</p>;
+}
+```
+
+- Now when you go to any page, you see the id.

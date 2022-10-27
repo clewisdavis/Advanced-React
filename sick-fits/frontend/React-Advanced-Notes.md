@@ -2668,3 +2668,11 @@ const UPDATE_PRODUCT_MUTATION = gql`
     },
   });
 ```
+
+- 3. Need to create a form to handle our updates
+
+- Copy and past from our `CreateProduct.js`, it's very similar
+
+- Query the single product
+- Passing into our `useForm()` hook
+- And passing the data into our form

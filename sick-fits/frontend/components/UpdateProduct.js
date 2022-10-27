@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
+import useForm from '../lib/useForm';
+import DisplayError from './ErrorMessage';
+import Form from './styles/Form';
 
 const SINGLE_PRODUCT_QUERY = gql`
   query SINGLE_PRODUCT_QUERY($id: ID!) {
@@ -37,8 +40,6 @@ export default function UpdateProduct({ id }) {
     variables: { id },
   });
 
-  console.log(data);
-
   // 2. need to get the mutation to update the product
   const [
     updateProduct,
@@ -50,6 +51,64 @@ export default function UpdateProduct({ id }) {
     },
   });
 
+  // 2.5 Create some state for teh form inputs
+  const { inputs, handleChange, clearForm, resetForm, alertMe } = useForm(
+    data?.Product
+  );
+  console.log(inputs);
+  if (loading) return <p>loading...</p>;
   // 3. need the form to handle the updates
-  return <p>Update Product {id}</p>;
+  return (
+    <Form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        // TODO: Handle submit!
+        // submit the input fields to the backend
+        // const res = await createProduct();
+        // clearForm();
+        // Go to that products page
+        // Router.push({
+        //   pathname: `/product/${res.data.createProduct.id}`,
+        // });
+      }}
+    >
+      <DisplayError error={error || updateError} />
+      <fieldset disabled={updateLoading} aria-busy={updateLoading}>
+        <label htmlFor="name">
+          Name
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name"
+            value={inputs.name}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label htmlFor="price">
+          Price
+          <input
+            type="number"
+            id="price"
+            name="price"
+            placeholder="price"
+            value={inputs.price}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="description">
+          Description
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Description"
+            value={inputs.description}
+            onChange={handleChange}
+          />
+        </label>
+        <button type="submit">Update Product</button>
+      </fieldset>
+    </Form>
+  );
 }

@@ -18,13 +18,13 @@ const SINGLE_PRODUCT_QUERY = gql`
 const UPDATE_PRODUCT_MUTATION = gql`
   mutation UPDATE_PRODUCT_MUTATION(
     $id: ID!
-    $name: string
-    $description: string
+    $name: String
+    $description: String
     $price: Int
   ) {
     updateProduct(
       id: $id
-      data: { id: $id, name: $name, description: $description, price: $price }
+      data: { name: $name, description: $description, price: $price }
     ) {
       id
       name
@@ -44,12 +44,7 @@ export default function UpdateProduct({ id }) {
   const [
     updateProduct,
     { data: updateData, error: updateError, loading: updateLoading },
-  ] = useMutation(UPDATE_PRODUCT_MUTATION, {
-    variables: {
-      id,
-      // TODO: Pass in updates to product here!
-    },
-  });
+  ] = useMutation(UPDATE_PRODUCT_MUTATION);
 
   // 2.5 Create some state for teh form inputs
   const { inputs, handleChange, clearForm, resetForm, alertMe } = useForm(
@@ -62,6 +57,15 @@ export default function UpdateProduct({ id }) {
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
+        const res = await updateProduct({
+          variables: {
+            id,
+            name: inputs.name,
+            description: inputs.description,
+            price: inputs.price,
+          },
+        }).catch(console.error);
+        console.log(res);
         // TODO: Handle submit!
         // submit the input fields to the backend
         // const res = await createProduct();

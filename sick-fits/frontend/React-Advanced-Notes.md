@@ -2676,3 +2676,12 @@ const UPDATE_PRODUCT_MUTATION = gql`
 - Query the single product
 - Passing into our `useForm()` hook
 - And passing the data into our form
+
+- One issue, when you to to a new product and edit, the fields are not populated. Have to manually refresh the page.
+- End of this video, lots of bugs. Prob best to just watch the video again.
+- Video # 28 updating Items
+- See `UpdateProduct.js` for the final working file to update the product with an edit form.
+
+### Loading state bug, useEffect
+
+- #29 video, using useEffect to deal with a tricky loading state issue

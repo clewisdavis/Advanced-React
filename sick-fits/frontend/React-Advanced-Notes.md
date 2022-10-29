@@ -2685,3 +2685,25 @@ const UPDATE_PRODUCT_MUTATION = gql`
 ### Loading state bug, useEffect
 
 - #29 video, using useEffect to deal with a tricky loading state issue
+- To solve this bug, in our `useForm.js`, when the intial data changes, then you need to update it.
+- You do that with `useEffect()`, allows us to monitor pieces of state or variables. And when those variables change, we can run some code.
+- In this case, when an initial state of loading, changes to actual data, then we need to update it.
+
+- Watch the values on the inputs, and when it goes from nothing, to something, than we know a change happened.
+- Create an array of our object, `const initialValues = Object.values(initial);`
+- And add a `.joing('')` to make it a string.
+- Then pass that into your `useEffect()`
+
+```JAVASCRIPT
+  const initialValues = Object.values(initial);
+
+  useEffect(() => {
+    // This function runs when things we are watching change
+    setInputs(initial);
+  }, [initialValues]);
+```
+
+- This will go form a string of nothing, to a string of default values, name, price etc.
+- Now, the data is showing up, when we edit the page via the edit button.
+
+### Making a delete button

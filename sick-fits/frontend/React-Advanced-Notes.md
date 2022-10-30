@@ -2707,3 +2707,52 @@ const UPDATE_PRODUCT_MUTATION = gql`
 - Now, the data is showing up, when we edit the page via the edit button.
 
 ### Making a delete button
+
+- Make a delete button to remove when clicked
+- Make a new component for delete in your components folder `components/DeleteProduct.js`.
+
+- Pass in the `id` of the product that needs to be deleted and any `children`. Functionality in the button
+
+```JAVASCRIPT
+export default function DeleteProduct({ id, children }) {
+  return <button type="button">{children}</button>;
+}
+```
+
+- Then inside our `Products.js` component, import and use the `DeleteProduct`
+
+```JAVASCRIPT
+<DeleteProduct>Delete</DeleteProduct>
+```
+
+- The reason you define `{children}` inside the component, allow you to put whatever you want inside the button `<DeleteProduct>Whatever</DeleteProduct>`
+
+- Pass in as a prop, the id of the product `<DeleteProduct id={product.id}>Delete</DeleteProduct>`
+
+- With delete buttons, you want to make sure someone didn't accidentally click it.
+- Two ways, you can popup a confirm
+- Or, maintain a click state to make sure someone wants to delete.
+
+- Define an `onclick` on the button and then run an inline function on the button.
+
+- Write a conditional `if()` statement for the `confirm()`. IF someone clicks cancel, then nothing will happen. If they choose ok, go ahead and delete.
+
+```JAVASCRIPT
+export default function DeleteProduct({ id, children }) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (confirm('Are you sure')) {
+          // go ahead and delete
+          console.log('deleted');
+        } // nothing happens
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+- Next thing to do, is delete the item and write a mutation that will delete it for us.

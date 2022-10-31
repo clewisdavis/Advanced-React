@@ -2756,3 +2756,103 @@ export default function DeleteProduct({ id, children }) {
 ```
 
 - Next thing to do, is delete the item and write a mutation that will delete it for us.
+- Make a new graphql query to delete the item in your `DeleteProducts` component.
+
+```JAVASCRIPT
+import gql from "graphql-tag";
+
+const DELETE_PRODUCT_MUTATION = gql`
+  mutation DELETE_PRODUCT_MUTATION($id: ID!) {
+    
+  }
+`;
+```
+
+- Go to your graphql, API explorer and get a new mutation.
+
+```JAVASCRIPT
+const DELETE_PRODUCT_MUTATION = gql`
+  mutation DELETE_PRODUCT_MUTATION($id: ID!) {
+    deleteProduct($id) {
+        id
+        name
+    }
+  }
+`;
+```
+
+- Then you run the mutation, before your `return()`
+
+```JAVASCRIPT
+  const [deleteProduct, { loading }] = useMutation(DELETE_PRODUCT_MUTATION, {
+    variables: { id },
+  });
+```
+
+- Tell it to run `DELETE_PRODUCT_MUTATION` and pass it any variables it needs, `{ variables: { id: id },}`
+
+- Now you can apply the `deleteProduct()` function to your `onClick` within the button
+
+```JAVASCRIPT
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (confirm('Are you sure')) {
+          // go ahead and delete
+          console.log('deleted');
+          deleteProduct();
+        } // nothing happens
+      }}
+    >
+      {children}
+    </button>
+  );
+```
+
+- Add an alert if a error happens.
+- `deleteProduct().catch((err) => alert(err.message));`
+
+- When you click the delete button, it removes the product, however it is still on the page. You have to refresh the page, and it will be gone.
+- In the next video, how to remove an item from Apollo Cache
+
+- Full Component
+
+```JAVASCRIPT
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+
+const DELETE_PRODUCT_MUTATION = gql`
+  mutation DELETE_PRODUCT_MUTATION($id: ID!) {
+    deleteProduct(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
+export default function DeleteProduct({ id, children }) {
+  const [deleteProduct, { loading }] = useMutation(DELETE_PRODUCT_MUTATION, {
+    variables: { id },
+  });
+  return (
+    <button
+      type="button"
+      disabled={loading}
+      onClick={() => {
+        if (confirm('Are you sure')) {
+          // go ahead and delete
+          console.log('deleted');
+          deleteProduct().catch((err) => alert(err.message));
+        } // nothing happens
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+## Removing items from Apollo Cache
+
+-

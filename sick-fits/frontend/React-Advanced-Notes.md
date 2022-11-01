@@ -2855,4 +2855,46 @@ export default function DeleteProduct({ id, children }) {
 
 ## Removing items from Apollo Cache
 
--
+- Issue is, we delete an item and it still appears on the page. It deletes it from the database, but still exist in memory, on the page.
+- Still in the cache, of our all products query.
+
+- Apollo has a nice option called `evict`, where it will take out that item from the cache. And Rect will re-render.
+- The way that works, we create an update function that you pass along with our `useMutation()`.
+
+- Pass into your `useMutation()` function
+
+```JAVASCRIPT
+  const [deleteProduct, { loading }] = useMutation(DELETE_PRODUCT_MUTATION, {
+    variables: { id },
+    update,
+  });
+```
+
+- Then write the `update()` function. And pass in the
+
+```JAVASCRIPT
+function update(cache, payload) {
+  console.log('this is the cache: ' cache);
+  console.log('running the update function after delete');
+}
+```
+
+- The way you remove from the cache, is use `cache.evict()`. You have to find the item in the cache, then evict it.
+- Use `cache.identify()` to find it and pass it our payload, `payload.data.deleteProduct`.
+- `cache.identify(payload.data.deleteProduct)`
+- `cache.identify()` It uses the typename, and id to identify where that item is in the Apollo cache.
+- Then, it takes it out, with the `cache.evict()` to take it out entirely.
+
+```JAVASCRIPT
+function update(cache, payload) {
+  console.log(payload);
+  console.log('running the update function after delete');
+  cache.evict(cache.identify(payload.data.deleteProduct));
+}
+```
+
+- Now, when you click on the delete button, it takes it out of the page.
+
+## Pagination
+
+### Pagination Links

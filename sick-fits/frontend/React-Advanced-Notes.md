@@ -2898,3 +2898,56 @@ function update(cache, payload) {
 ## Pagination
 
 ### Pagination Links
+
+- General Approach
+
+1. Render the actual links
+2. Alow for dynamic routing
+3. Filter the products for the current page
+4. Deal with teh Cache invalidation
+
+- Make a new component, `components/Pagination.js`
+- And pass in the parameter, the page you are currently on `{page}`
+
+```JAVASCRIPT
+export default function Pagination({ page }) {
+  return <p>Pagination!</p>;
+}
+```
+
+- Set up the SEO stuff, for the title tag. Import the `Head` from `next/head`.
+- And import your `PaginationStyles`.
+
+```JAVASCRIPT
+import Head from 'next/head';
+import PaginationStyles from './styles/PaginationStyles';
+
+export default function Pagination({ page }) {
+  return (
+    <PaginationStyles>
+      <Head>
+        <title>Sick Fits - Page {page} of ___</title>
+      </Head>
+    </PaginationStyles>
+  );
+}
+```
+
+- Go to page that renders all the items, in `products.js`
+- Import and put above and below your `<Products />` component.
+- And create a prop for page, `page={}`, which will be passed in via query params. For now just hardcode, page 1.
+
+```JAVASCRIPT
+import Pagination from '../components/Pagination';
+import Products from '../components/Products';
+
+export default function ProductsPage() {
+  return (
+    <div>
+      <Pagination page={1} />
+      <Products />
+      <Pagination page={1} />
+    </div>
+  );
+}
+```

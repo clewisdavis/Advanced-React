@@ -2951,3 +2951,57 @@ export default function ProductsPage() {
   );
 }
 ```
+
+- Need couple things
+  - Link to the next and previous page
+  - Total pages
+  - Current page we are on
+
+- Use the `<Link>` component from next.js, import it
+
+```JAVASCRIPT
+import Head from 'next/head';
+import Link from 'next/link';
+import PaginationStyles from './styles/PaginationStyles';
+
+export default function Pagination({ page }) {
+  return (
+    <PaginationStyles>
+      <Head>
+        <title>Sick Fits - Page {page} of ___</title>
+      </Head>
+      <Link href="/">⬅️ Prev</Link>
+      <p>Page ___ of ___</p>
+      <p>___ Items Total</p>
+      <Link href="/">Next</Link>
+    </PaginationStyles>
+  );
+}
+```
+
+- Calculate how many pages you have, have to calculate items total, and items per page.
+- To get total number of items, you can write a query, in our API explorer graphql.
+- Apollo give you a meta query, so you can use `_allProductsMeta` and ask for `count` and Apollo will return how many products you have.
+
+```JAVASCRIPT
+query {
+  _allProductsMeta {
+    count
+  }
+}
+```
+
+- Then inside your `<Pagination>` component, add the graphql query.
+
+```JAVASCRIPT
+const PAGINATION_QUERY = gql`
+  query PAGINATION_QUERY {
+    _allProductsMeta {
+      count
+    }
+  }
+`;
+```
+
+- To use that data, add it to your `Pagination` component, before the return, with `useQuery()`.
+- Add your conditional

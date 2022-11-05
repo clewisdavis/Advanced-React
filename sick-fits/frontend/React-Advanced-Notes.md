@@ -3004,4 +3004,69 @@ const PAGINATION_QUERY = gql`
 ```
 
 - To use that data, add it to your `Pagination` component, before the return, with `useQuery()`.
-- Add your conditional
+- Add your conditional for the loading and error handling.
+
+```JAVASCRIPT
+  const { error, loading, data } = useQuery(PAGINATION_QUERY);
+  if (loading) return `Loading...`;
+  if (error) return <DisplayError error={error} />;
+```
+
+- Now, you have your data you can interpolate how many items there are.
+- Get the total count of items and just make a `count` variable.
+
+```JAVASCRIPT
+export default function Pagination({ page }) {
+  const { error, loading, data } = useQuery(PAGINATION_QUERY);
+  if (loading) return `Loading...`;
+  if (error) return <DisplayError error={error} />;
+
+  const { count } = data._allProductsMeta;
+
+  return (
+    <PaginationStyles>
+      <Head>
+        <title>Sick Fits - Page {page} of ___</title>
+      </Head>
+      <Link href="/">⬅️ Prev</Link>
+      <p>Page ___ of ___</p>
+      <p>{count} Items Total</p>
+      <Link href="/">Next</Link>
+    </PaginationStyles>
+  );
+}
+```
+
+- Now you need to determine how many pages you have. Best not to hardcode that value, store it in a variable. Best place is store in a config.
+- `config.js`
+- `export const perPage = 4;`
+
+- In your `Pagination` component, import the `perPage` variable from `config.js`
+- `import { perPage } from '../config';`
+
+- Create a `pageCount` variable and divide the `count / perPage` and stick that into your return.
+
+```JAVASCRIPT
+export default function Pagination({ page }) {
+  const { error, loading, data } = useQuery(PAGINATION_QUERY);
+  if (loading) return `Loading...`;
+  if (error) return <DisplayError error={error} />;
+
+  const { count } = data._allProductsMeta;
+  const pageCount = count / perPage;
+
+  return (
+    <PaginationStyles>
+      <Head>
+        <title>Sick Fits - Page {page} of ___</title>
+      </Head>
+      <Link href="/">⬅️ Prev</Link>
+      <p>Page ___ of {pageCount}</p>
+      <p>{count} Items Total</p>
+      <Link href="/">Next</Link>
+    </PaginationStyles>
+  );
+}
+```
+
+- Will give you a decimal.

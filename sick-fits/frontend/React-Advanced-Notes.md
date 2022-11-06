@@ -3069,4 +3069,55 @@ export default function Pagination({ page }) {
 }
 ```
 
-- Will give you a decimal.
+- Will give you a decimal, you want to get to the next whole number, so you can show the last product.
+- Wrap the `pageCount` ina  `Math.ceil`
+
+```JAVASCRIPT
+const pageCount = Math.ceil(count / perPage);
+```
+
+- Now if you change that global variable, and save, you will see the page count update on the pagination UI.
+
+- Next thing, to dynamically generate the next and previous based on the page prop, variable being passed.
+- Add within your `Link` components `href` for the Previous and Next.
+
+```JAVASCRIPT
+  return (
+    <PaginationStyles>
+      <Head>
+        <title>Sick Fits - Page {page} of ___</title>
+      </Head>
+      <Link href={`/products/${page - 1}`}>⬅️ Prev</Link>
+      <p>
+        Page {page} of {pageCount}
+      </p>
+      <p>{count} Items Total</p>
+      <Link href={`/products/${page + 1}`}>Next ➡️</Link>
+    </PaginationStyles>
+  );
+```
+
+- If you have a page that doesn't exist for previous state. You have to disable it.
+- NOTE: If you want to put attributes on a Next.js `<Link>` tag, you need to include an `<a>Your Stuff</a>` inside your component.
+- In this case, we want to put an `aria-disabled="true"` for our previous link based on some logic.
+
+```JAVASCRIPT
+      <Link href={`/products/${page - 1}`}>
+        <a aria-disabled={page <= 1}>⬅️ Prev</a>
+      </Link>
+```
+
+- If you are going to be nesting things inside the `<Link>`, the `href` will always go on the `<Link href="/">`
+- Now, the link is disabled, it visually tell user and accessibly tells users they cannot click it.
+
+- And do the same thing for the next link, but change the condition to be `page >= pageCount`.
+
+```JAVASCRIPT
+      <Link href={`/products/${page + 1}`}>
+        <a aria-disabled={page >= pageCount}>Next ➡️</a>
+      </Link>
+```
+
+### Pagination Dynamic Routing
+
+- Render the links dynamically Next.js

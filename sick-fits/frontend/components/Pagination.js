@@ -20,17 +20,23 @@ export default function Pagination({ page }) {
   if (error) return <DisplayError error={error} />;
 
   const { count } = data._allProductsMeta;
-  const pageCount = count / perPage;
+  const pageCount = Math.ceil(count / perPage);
 
   return (
     <PaginationStyles>
       <Head>
         <title>Sick Fits - Page {page} of ___</title>
       </Head>
-      <Link href="/">⬅️ Prev</Link>
-      <p>Page ___ of {pageCount}</p>
+      <Link href={`/products/${page - 1}`}>
+        <a aria-disabled={page <= 1}>⬅️ Prev</a>
+      </Link>
+      <p>
+        Page {page} of {pageCount}
+      </p>
       <p>{count} Items Total</p>
-      <Link href="/">Next</Link>
+      <Link href={`/products/${page + 1}`}>
+        <a aria-disabled={page >= pageCount}>Next ➡️</a>
+      </Link>
     </PaginationStyles>
   );
 }

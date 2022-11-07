@@ -3121,3 +3121,61 @@ const pageCount = Math.ceil(count / perPage);
 ### Pagination Dynamic Routing
 
 - Render the links dynamically Next.js
+- Query String Routing, `http://localhost:7777/products?page=2`, passes the differential with it.
+
+- Can also, file based routing, `http://localhost:7777/products/2`
+- **File Based routing**, preferred in this situation.
+- Make a new folder, `pages/products`, and create a new file `[page].js`.
+- This is very similar to the `[id].js` we made earlier.
+- `[page].js`, `page` is what the variable will be called when it's passed to you via query param.
+
+- Tip: Move the `products.js` inside your `products` folder to clean things up.
+- And rename it `products/index.js`, make sure your import is updated from the main `index.js` file.
+
+- Inside your `[page].js` file, create a component
+
+```JAVASCRIPT
+export default function ProductsPage() {
+  return <p>Hey Product</p>;
+}
+```
+
+- `http://localhost:7777/products/3`, now navigating to individual product
+
+- Update `[page].js` to be:
+
+```JAVASCRIPT
+export { default } from './index';
+```
+
+- A little confusing, we want the same thing to render out on different url's. Video time stamp 6:10
+- We have three different files but all rendering out the same thing.
+  - `index.js`
+  - `products/index.js`
+  - `products/[page].js`
+
+- We are defining what happens in one file, and the other ones are just pointing to it.
+- So now we can access the current page value, via our router.
+
+- Add `useRouter()` to your`products/index.js` file, and console log it.
+- You are looking for the `query: Object { page: "3" }` in the console.
+
+```JAVASCRIPT
+import { useRouter } from 'next/dist/client/router';
+import Pagination from '../../components/Pagination';
+import Products from '../../components/Products';
+
+export default function ProductsPage() {
+  const router = useRouter();
+  console.log(router);
+  return (
+    <div>
+      <Pagination page={1} />
+      <Products />
+      <Pagination page={1} />
+    </div>
+  );
+}
+```
+
+- 💡 that page value come because we named our file `products/[page].js`

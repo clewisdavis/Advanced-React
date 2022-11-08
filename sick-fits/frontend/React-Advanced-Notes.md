@@ -3179,3 +3179,49 @@ export default function ProductsPage() {
 ```
 
 - 💡 that page value come because we named our file `products/[page].js`
+- Destructure the `query` so you can use it, directly off the `useRouter()`
+
+```JAVASCRIPT
+  const { query } = useRouter();
+  console.log(query.page);
+```
+
+- `query.page` will give you the number of pages. Use that in your `Pagination` component.
+- If there is no page passed, on the home page or product page, it will default to one. `page={query.page || 1}`
+
+```JAVASCRIPT
+<Pagination page={query.page || 1} />
+```
+
+- 🐛: bug, when clicking on the next, it jumps to page 11.  
+- If you look in the `Pagination` component, we were concatenating and not actually adding.
+- Tip: you can can check the type, using `typeof` on your `query.page`
+- `console.log(typeof query.page);`, comes back in the console as string.
+
+- You can convert to a number
+
+```JAVASCRIPT
+  const page = parseInt(query.page);
+  console.log(typeof page);
+```
+
+- Then update your prop to just page.
+
+```JAVASCRIPT
+export default function ProductsPage() {
+  const { query } = useRouter();
+  const page = parseInt(query.page);
+
+  return (
+    <div>
+      <Pagination page={page || 1} />
+      <Products />
+      <Pagination page={page || 1} />
+    </div>
+  );
+}
+```
+
+### Adjust query for Pagination Values, 34
+
+-

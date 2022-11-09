@@ -3224,4 +3224,53 @@ export default function ProductsPage() {
 
 ### Adjust query for Pagination Values, 34
 
--
+- We also need the current page inside our current product.
+- Easier to just grab it out of the router once, and parse it and pass it in, than to re-use `useRouter()` over and over.
+
+- In your `Products.js`, we want to modify the query, to get the first products. And offset them, based on which page we are currently on.
+- Pass the page to your products component `<Products page={page || 1} />`
+
+- Then in your query, on `Products.js`, you need to modify it to take in some variables, `$skip: Int = 0, $first: Int`
+- Skip value is calculated based on what page we are on.
+- First, tell us ,how many per page we need to pass, no default
+
+- Now you need to pass to your graphql function.
+
+```JAVASCRIPT
+export const ALL_PRODUCTS_QUERY = gql`
+  query ALL_PRODUCTS_QUERY($skip: Int = 0, $first: Int) {
+    allProducts(first: $first, skip: $skip) {
+      id
+      name
+      price
+      description
+      photo {
+        id
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+```
+
+- Go down to where you use the query, and pass in the arguments.
+
+```JAVASCRIPT
+export default function Products({ page }) {
+  const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY, {
+    variables: {
+      skip: page * perPage - perPage,
+      first: perPage,
+    },
+  });
+```
+
+- The skip and first variables, calculate the number of products per page, based on the `perPage` variable in your `config.js`
+- TIP: Notice the first time, you hit next, it has to load the products, and when you go back, it's fast. Because it's serving it from the apollo cache, doesn't have to make a network request.
+
+### Custom Type Policies and Control over Apollo Cache, 35
+
+- Saying goes in Computer Science, is naming things, cache and validation
+- What happens when you delete an item, when you have pagination

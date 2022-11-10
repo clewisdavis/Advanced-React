@@ -3274,3 +3274,30 @@ export default function Products({ page }) {
 
 - Saying goes in Computer Science, is naming things, cache and validation
 - What happens when you delete an item, when you have pagination
+- This video and step sucks,
+- When we delete an item, that item needs to be deleted from the cache. And all the other items needs to be brought up.
+- 12345, if you delete an item, it should shift an item up to the correct page.
+
+- How do you handle that?
+  - re-fetch the query but we don't know what all the queries are
+  - put all products in one big list, then delete an item and everything will bump itself up
+  - Or, you delete an item, delete them all from cache. And reload, but Apollo does not have a way to delete of a certain type.
+
+- Type policies, in Apollo. We have to write this ourselves.
+- In the `withData.js` file, uncomment the `paginationField()` and we will write this.
+- In the `lib` folder, make a new file for `paginationField.js`
+
+```JAVASCRIPT
+export default paginationField() {
+    return {
+        read() {
+
+        },
+        merge() {
+            
+        }
+    }
+}
+```
+
+- Import that into your `withData.js`

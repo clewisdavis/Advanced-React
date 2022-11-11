@@ -3301,3 +3301,23 @@ export default paginationField() {
 ```
 
 - Import that into your `withData.js`
+
+- The way `read()` and `merge()` works, when Apollo tries to load all products, the sequence of events in sudo code
+
+```JAVASCRIPT
+export default function paginationField() {
+  return {
+    read() {
+      // First thing it does, ask the read function for those items.
+      // We can either do one of two things:
+      // First things we can do is return the items because they are already in the cache
+      // The other thing we can do is to return false form here, which will make a network request
+    },
+    merge() {
+      // This runs when the Apollo client comes back form the network with our product, how it will be put into the cache
+    },
+  };
+}
+```
+
+- Writing out the pagination logic

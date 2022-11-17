@@ -3321,3 +3321,61 @@ export default function paginationField() {
 ```
 
 - Writing out the pagination logic, just view the video, to confusing.
+- Very complicated, all this to delete an item, and have it reload and re-fetch an item for the next page.
+- To do this, we made all our items under one key, which is `allProducts`, and they are not under multiple keys, page1, page2 etc.
+- To see the final, view `lib/paginationField.js`
+
+## Module 8, User Registration and AUth
+
+- Signing in and signing out
+
+### Querying the CUrrent User
+
+- Signing in and signing out etc.
+- In the `Nav.js` we will show a logged in user
+- Make a new component, `components/User.js` and it will contain a query for the current user
+- And a custom hook to get the current user regardless of which file we are in
+
+- Set up the function, and make the query in `User.js`.
+
+```JAVASCRIPT
+import { gql, useQuery } from '@apollo/client';
+
+const CURRENT_USER_QUERY = gql``;
+
+export function useUser() {
+  const { data } = useQuery(CURRENT_USER_QUERY);
+}
+```
+
+- Query the user in graphql, special syntax on the query.
+- In your
+- Called a Union, comes back with differ types
+
+- When an `authenticatedItem` returns a user, then on that user we will return the `id`, `email` etc.
+
+```JAVASCRIPT
+query {
+  authenticatedItem {
+    ... on User {
+      id
+      email
+    }
+  }
+}
+```
+
+- Why is it like that? Sometimes we are querying for multiple things, that return to differ types. For example;
+
+```JAVASCRIPT
+query media {
+  ... on TvShow {
+    episodeCount
+  }
+  ... on Movie {
+    time
+  }
+}
+```
+
+- When it is a `TvShow` give me the TvShow, and when it is a `Movie` give me the movie.

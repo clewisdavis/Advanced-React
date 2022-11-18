@@ -3379,3 +3379,87 @@ query media {
 ```
 
 - When it is a `TvShow` give me the TvShow, and when it is a `Movie` give me the movie.
+
+- Define the graphql query
+
+```JAVASCRIPT
+const CURRENT_USER_QUERY = gql`
+  query {
+    authenticatedItem {
+      ... on User {
+        id
+        email
+        name
+        # TODO: Query the cart once we have it
+      }
+    }
+  }
+`;
+```
+
+- Add it to your `useUser()` function
+
+```JAVASCRIPT
+export function useUser() {
+  const { data } = useQuery(CURRENT_USER_QUERY);
+  // If there is data, return the authenticatedItem
+  // If it returns undefined, we know the user is not currently logged in
+  return data?.authenticatedItem;
+}
+```
+
+- Makes it a hook you can use in the `Nav.js`
+- Import to your `Nav` component, and define a variable, then console log it out so you can see the object with user info.
+
+```JAVASCRIPT
+import { useUser } from './User';
+
+export default function Nav() {
+  const user = useUser();
+  console.log(user);
+  return (
+    <NavStyles>
+      <Link href="/products">Product</Link>
+      <Link href="/sell">Sell</Link>
+      <Link href="/orders">Orders</Link>
+      <Link href="/account">Account</Link>
+    </NavStyles>
+  );
+}
+```
+
+- Add the logic for if user is logged in.
+
+```JAVASCRIPT
+export default function Nav() {
+  const user = useUser();
+  console.log(user);
+  return (
+    <NavStyles>
+      <Link href="/products">Product</Link>
+      {user && (
+        <>
+          <Link href="/sell">Sell</Link>
+          <Link href="/orders">Orders</Link>
+          <Link href="/account">Account</Link>
+        </>
+      )}
+    </NavStyles>
+  );
+}
+```
+
+- And if the user is not logged in, show the signin page.
+
+```JAVASCRIPT
+      {!user && (
+        <>
+          <Link href="/signin"> Sign In</Link>
+        </>
+      )}
+```
+
+- Open up in an incognito tab, so you can see the logged out state.
+- Then create a sign in page component `pages/signin.js`
+
+### Creating a Sign In Component

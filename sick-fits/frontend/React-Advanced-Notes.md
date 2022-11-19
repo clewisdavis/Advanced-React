@@ -3463,3 +3463,65 @@ export default function Nav() {
 - Then create a sign in page component `pages/signin.js`
 
 ### Creating a Sign In Component
+
+- Create a sign in component, if a user is restricted and only able to see if logged in.
+- If someone is trying to access a component that is restricted, you can check to see if they are logged in, and render out the sign in component
+- Can check if user is logged in, if not than render out the sign in component.
+- Other wise just render out the component they are supposed to see.
+
+- Create a sign in form component, `components/SignIn.js`
+
+```JAVASCRIPT
+import Form from './styles/Form';
+
+export default function SignIn() {
+  return (
+    <Form>
+      <p>Sign in form!</p>
+    </Form>
+  );
+}
+```
+
+- Then import that into your `signin.js` page. You should see the component now.
+- TIP SECURITY: On your `<Form>` component, make sure you put a `method="POST"` so you don't accidentally expose someone password to the url, or log
+
+- Add the input field to build out the form, and submit button
+
+```JAVASCRIPT
+import Form from './styles/Form';
+
+export default function SignIn() {
+  return (
+    <Form method="POST">
+      <fieldset>
+        <label htmlFor="email">
+          Email
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email Address"
+            autoComplete="email"
+            // value
+            // onChange handler
+          />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            autoComplete="password"
+            // value
+            // onChange handler
+          />
+        </label>
+        <button type="submit">Sign In!</button>
+      </fieldset>
+    </Form>
+  );
+}
+```
+
+- Next, we need to sync these values to state, for our sign in API

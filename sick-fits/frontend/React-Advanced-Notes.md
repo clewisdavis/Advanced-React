@@ -3524,4 +3524,74 @@ export default function SignIn() {
 }
 ```
 
-- Next, we need to sync these values to state, for our sign in API
+- Next, we need to sync these values to state, for our sign in API once the user submits it.
+
+```JAVASCRIPT
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: '',
+  });
+```
+
+- Add the value and onChange to the form.
+
+```JAVASCRIPT
+import Form from './styles/Form';
+import useForm from '../lib/useForm';
+
+export default function SignIn() {
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: '',
+  });
+
+  return (
+    <Form method="POST">
+      <h2>Sign Into Your Account</h2>
+      <fieldset>
+        <label htmlFor="email">
+          Email
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email Address"
+            autoComplete="email"
+            // value
+            value={inputs.email}
+            // onChange handler
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            autoComplete="password"
+            // value
+            value={inputs.password}
+            // onChange handler
+            onChange={handleChange}
+          />
+        </label>
+        <button type="submit">Sign In!</button>
+      </fieldset>
+    </Form>
+  );
+}
+```
+
+- Now when someone submits the form, we need to send that Data to an API
+- Create a function for `onSubmit`
+
+```JAVASCRIPT
+  function handleSubmit(e) {
+    e.preventDefault(); // Stop the form from submitting
+    console.log(inputs);
+    // Send the email and password to the graphql API
+  }
+```
+
+- And add it to your `<Form>` component, `<Form method="POST" onSubmit={handleSubmit}>`
+- Next, create a graphql query to send the data to the API

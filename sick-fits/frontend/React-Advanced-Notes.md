@@ -3595,3 +3595,74 @@ export default function SignIn() {
 
 - And add it to your `<Form>` component, `<Form method="POST" onSubmit={handleSubmit}>`
 - Next, create a graphql query to send the data to the API
+- Pass in a email and password, both are required `!`
+
+```JAVASCRIPT
+const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    
+  }
+`;
+```
+
+- Then inside that mutation we call the graphql API
+- Look the API docs, `authenticatedUserWithPassword` has a union. Returns success or fail and you have to write a gql query for each.
+
+- If success, then return
+
+```JAVASCRIPT
+const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    ... on UserAuthenticationWithPasswordSuccess {
+      item {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+```
+
+- Create the mutation so you can call it in your form `handleSubmit()`
+
+```JAVASCRIPT
+  const [signin, { error, loading }] = useMutation(SIGNIN_MUTATION, {
+    variables: inputs,
+    // refetch the currently logged in user
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
+```
+
+- Convert your `handleSubmit()` to an `async`, `await`.
+
+```JAVASCRIPT
+  async function handleSubmit(e) {
+    e.preventDefault(); // Stop the form from submitting
+    console.log(inputs);
+    await signin();
+    // Send the email and password to the graphql API
+  }
+```
+
+- TIP: If you want to see what comes back from that `await`, you can store it in a variable and log it out.
+
+- Error, forgot to add `authenticateUserWithPassword` in the gql query
+
+```JAVASCRIPT
+const SIGNIN_MUTATION = gql`
+  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
+    authenticateUserWithPassword(email: $email, password: $password) {
+      ... on UserAuthenticationWithPasswordSuccess {
+        item {
+          id
+          email
+          name
+        }
+      }
+    }
+  }
+`;
+```
+
+- Now you can see the query in your console.

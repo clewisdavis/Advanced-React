@@ -30,11 +30,13 @@ export default function SignIn() {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
+  console.log(error);
   async function handleSubmit(e) {
     e.preventDefault(); // Stop the form from submitting
-    console.log(inputs);
+    // console.log(inputs);
     const res = await signin();
     console.log(res);
+    resetForm();
     // Send the email and password to the graphql API
   }
 

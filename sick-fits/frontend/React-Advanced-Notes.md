@@ -3666,3 +3666,7 @@ const SIGNIN_MUTATION = gql`
 ```
 
 - Now you can see the query in your console.
+- And reset your form, to empty it out after submit, `resetFrom()`
+
+- Error state, now need to capture the error and send to an error component
+-

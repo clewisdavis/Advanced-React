@@ -3669,4 +3669,17 @@ const SIGNIN_MUTATION = gql`
 - And reset your form, to empty it out after submit, `resetFrom()`
 
 - Error state, now need to capture the error and send to an error component
--
+- Creating the error state, have to pass it in from graphql API
+- And write a conditional, if an error then pass it to your `<Error/>` component
+
+```JAVASCRIPT
+  const error =
+    data?.authenticateUserWithPassword.__typename ===
+    'UserAuthenticationWithPasswordFailure'
+      ? data?.authenticateUserWithPassword
+      : undefined;
+```
+
+- Then you can pass `error` to your component to display on the page. `<Error error={data?.authenticateUserWithPassword} />`
+
+### Creating a Sign Out Component

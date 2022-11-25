@@ -3683,3 +3683,40 @@ const SIGNIN_MUTATION = gql`
 - Then you can pass `error` to your component to display on the page. `<Error error={data?.authenticateUserWithPassword} />`
 
 ### Creating a Sign Out Component
+
+- Create a `SignOut.js` component
+
+```JAVASCRIPT
+export default function SignOut({ children }) {
+  return <button type="button">Sign Out</button>;
+}
+```
+
+- And the create a `gql` mutation
+- Add it to your component
+
+```JAVASCRIPT
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+import { CURRENT_USER_QUERY } from './User';
+
+const SIGN_OUT_MUTATION = gql`
+  mutation {
+    endSession
+  }
+`;
+
+export default function SignOut() {
+  const [signout] = useMutation(SIGN_OUT_MUTATION, {
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
+  return (
+    <button type="button" onClick={signout}>
+      Sign Out
+    </button>
+  );
+}
+```
+
+- And import and use in your `Nav.js` component.
+- Now allows you to sign out, but didn't refresh.

@@ -3720,3 +3720,120 @@ export default function SignOut() {
 
 - And import and use in your `Nav.js` component.
 - Now allows you to sign out, but didn't refresh.
+- Try sign in and sign out, you will see the nav bar update
+
+## Creating our Sign Up Flow
+
+- Add a new component for signing up.
+- Very similar to our sign in component, and save copy. `components/SignUp.js`
+- Duplicate the `components/SignIp.js` component and rename as `components/SignUp.js`
+- Rename the function to `SignUp()` and import into your `pages/signin.js`
+
+- Do some styles for layout grid, in `signin.js`
+
+```JAVASCRIPT
+import styled from 'styled-components';
+import SignIn from '../components/SignIn';
+import SignUp from '../components/SignUp';
+
+const GridStyles = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+export default function SignInPage() {
+  return (
+    <GridStyles>
+      <SignIn />
+      <SignUp />
+    </GridStyles>
+  );
+}
+```
+
+- Now, in your `<SignUp />` component, start to replace some things
+- Start with the inputs and then the mutation
+
+- Add a name input, and name to the `useForm()` function
+
+```JAVASCRIPT
+        <label htmlFor="email">
+          Your Name
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            autoComplete="name"
+            // value
+            value={inputs.name}
+            // onChange handler
+            onChange={handleChange}
+          />
+        </label>
+```
+
+```JAVASCRIPT
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    name: '',
+    password: '',
+  });
+```
+
+- Now create a new `gql` mutation.
+- and use the `createUser()` API, part of Keystone
+
+```JAVASCRIPT
+const SIGNUP_MUTATION = gql`
+  mutation SIGNUP_MUTATION($email: String!, $name: String!, $password: String!) {
+    createUser()
+  }
+`;
+```
+
+- Uses the data object, and within the data object, you have options.
+
+```JAVASCRIPT
+const SIGNUP_MUTATION = gql`
+  mutation SIGNUP_MUTATION(
+    $email: String!
+    $name: String!
+    $password: String!
+  ) {
+    createUser(data: { email: $email, name: $name, password: $password }) {
+      id
+      email
+      name
+    }
+  }
+`;
+```
+
+- Now update the `signIn()` method to `signUp()`
+- TIP: You can rename a method in VSCode, right click and choose `Rename Symbol` and it will update any other reference.  
+
+- Show an alert that the account was created. Inside the `<Fieldset>`
+
+```JAVASCRIPT
+        {data?.createUser && (
+          <p>
+            Signed up with {data.createUser.email} - Please go ahead and sign
+            in!
+          </p>
+        )}
+```
+
+- A better way, create an `if` statement and return the message. No need to show the form if they have already signed up.
+
+```JAVASCRIPT
+  if (data?.createUser) {
+    return (
+      <p>
+        Signed up with {data.createUser.email} - Please go ahead and sign in!
+      </p>
+    );
+  }
+```
+
+-

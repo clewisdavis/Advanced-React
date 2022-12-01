@@ -19,11 +19,9 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-export default function SignUp() {
+export default function RequestReset() {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
-    name: '',
-    password: '',
   });
 
   const [signup, { data, loading, error }] = useMutation(SIGNUP_MUTATION, {
@@ -50,7 +48,7 @@ export default function SignUp() {
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Sign Up for An Account</h2>
+      <h2>Request a Password Reset</h2>
       <Error error={error} />
       <fieldset>
         {data?.createUser && (
@@ -59,19 +57,6 @@ export default function SignUp() {
             in!
           </p>
         )}
-        <label htmlFor="email">
-          Your Name
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            autoComplete="name"
-            // value
-            value={inputs.name}
-            // onChange handler
-            onChange={handleChange}
-          />
-        </label>
         <label htmlFor="email">
           Email
           <input
@@ -85,20 +70,7 @@ export default function SignUp() {
             onChange={handleChange}
           />
         </label>
-        <label htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            // value
-            value={inputs.password}
-            // onChange handler
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Sign In!</button>
+        <button type="submit">Request Reset!</button>
       </fieldset>
     </Form>
   );

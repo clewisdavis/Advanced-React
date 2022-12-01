@@ -3836,4 +3836,13 @@ const SIGNUP_MUTATION = gql`
   }
 ```
 
--
+- See finished component `SignUp.js` and best to watch video.
+
+## Password Reset - Requesting a Reset
+
+- How it works, backend generate a random token and emailed a link
+- When try to reset, pass it your token, and email and password, check if that token is you
+- Keystone, now has the flow for this, but does not send an email
+
+- Duplicate the `SignUp.js` component.
+- Save as `components/RequestReset.js`

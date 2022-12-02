@@ -3846,3 +3846,16 @@ const SIGNUP_MUTATION = gql`
 
 - Duplicate the `SignUp.js` component.
 - Save as `components/RequestReset.js`
+- Update the form to just be the email field
+- And update the mutation to `REQUEST_RESET_MUTATION`
+- That only takes in an email address
+
+- On the backend, you have to add `passwordResetLink` to the `createAuth()` method.
+
+```JAVASCRIPT
+passwordResetLink: {
+    async sendToken(args) {
+      console.log(args);
+    },
+  },
+```

@@ -5,16 +5,11 @@ import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY } from './User';
 import Error from './ErrorMessage';
 
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $email: String!
-    $name: String!
-    $password: String!
-  ) {
-    createUser(data: { email: $email, name: $name, password: $password }) {
-      id
-      email
-      name
+const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION($email: String!) {
+    sendUserPasswordResetLink(email: $email) {
+      code
+      message
     }
   }
 `;
@@ -24,11 +19,14 @@ export default function RequestReset() {
     email: '',
   });
 
-  const [signup, { data, loading, error }] = useMutation(SIGNUP_MUTATION, {
-    variables: inputs,
-    // refetch the currently logged in user
-    // refetchQueries: [{ query: CURRENT_USER_QUERY }],
-  });
+  const [signup, { data, loading, error }] = useMutation(
+    REQUEST_RESET_MUTATION,
+    {
+      variables: inputs,
+      // refetch the currently logged in user
+      // refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    }
+  );
 
   async function handleSubmit(e) {
     e.preventDefault(); // Stop the form from submitting

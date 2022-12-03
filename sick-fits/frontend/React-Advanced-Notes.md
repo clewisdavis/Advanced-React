@@ -3859,3 +3859,17 @@ passwordResetLink: {
     },
   },
 ```
+
+- Then check it when you enter your email address, and view your terminal to see the `args` come back.
+
+```JAVASCRIPT
+<fieldset>
+  {data?.sendUserPasswordResetLink === null && (
+          <p>Success! Check your email for a link!</p>
+  )}
+  ...rest of form
+</fieldset>
+```
+
+- Next thing, make a new form and take the token in from url and reset it
+- Last thing, go in the backend and send an actual email instead of just logging it

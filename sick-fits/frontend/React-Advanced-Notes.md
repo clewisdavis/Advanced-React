@@ -3873,3 +3873,50 @@ passwordResetLink: {
 
 - Next thing, make a new form and take the token in from url and reset it
 - Last thing, go in the backend and send an actual email instead of just logging it
+
+## Password Reset - Setting a new password
+
+- Going to manually pass the tokens in for now
+- Need a separate page, `pages/reset.js`
+
+```JAVASCRIPT
+export default function ResetPage() {
+  return (
+    <div>
+      <p>RESET YOUR PASSWORD</p>
+    </div>
+  );
+}
+```
+
+- If you go to `/reset`, you can view the page
+- And we are going to pass the token in via query param
+- You can use either router or page props
+- In the url, specify the query param, just type into the url, `/reset?token=PASTETOKENHERE`
+- Pass into your page props and console log it.
+
+```JAVASCRIPT
+export default function ResetPage(props) {
+  console.log(props);
+  return (
+    <div>
+      <p>RESET YOUR PASSWORD</p>
+    </div>
+  );
+}
+```
+
+- A way to get values from URL's
+- Then you can destructure your query, `{query}`, and put the token in `{query.token}`
+
+```JAVASCRIPT
+export default function ResetPage({ query }) {
+  return (
+    <div>
+      <p>RESET YOUR PASSWORD {query.token}</p>
+    </div>
+  );
+}
+```
+
+- If someone goes to the reset page directly, check if their is a token.

@@ -3920,3 +3920,42 @@ export default function ResetPage({ query }) {
 ```
 
 - If someone goes to the reset page directly, check if their is a token.
+- Add a conditional to check to see if a token is passed in.
+- And add the `<RequestReset />` component
+
+```JAVASCRIPT
+import RequestReset from "../components/RequestReset";
+
+export default function ResetPage({ query }) {
+  if (!query?.token) {
+    return (
+      <div>
+        <p>Sorry you must supply a token</p>;
+        <RequestReset />
+      </div>
+    );
+  }
+  return (
+    <div>
+      <p>RESET YOUR PASSWORD {query.token}</p>
+    </div>
+  );
+}
+```
+
+- Have to go to the url directly to see it, `http://localhost:7777/reset`
+
+- Make a new component `components/Reset.js`, you can save a copy from `components/RequestReset.js`
+- The reset is going to take in a few things
+
+```JAVASCRIPT
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: '',
+    token: '',
+  });
+```
+
+- Add a password field, you can grab one from the `Signup.js` component
+- Render it out on `reset.js` page so we can see what we are working with
+- Add it to the `pages/reset.js` page.

@@ -3959,3 +3959,60 @@ export default function ResetPage({ query }) {
 - Add a password field, you can grab one from the `Signup.js` component
 - Render it out on `reset.js` page so we can see what we are working with
 - Add it to the `pages/reset.js` page.
+- Update the title to Reset Your Password
+
+- Next, we need to update the mutation from REQUEST to RESET_MUTATION
+- And call the method, `redeemUserPasswordResetToken` and pass in `email: $email, token: $token, password: $password`
+
+```JAVASCRIPT
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $password: String!
+    $token: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
+      code
+      message
+    }
+  }
+`;
+```
+
+- Have the mutation `RESET_MUTATION`, take in three parameters `email password token` > calls `redeemUserPasswordResetToken` and passes it three arguments, back from that you get a `code` or a `message`
+- We have our function with our `useForm()` method and `useMutation`
+- Update the symbol, from `signup` to `reset`
+- And the condition language, Success you can now sign in
+- Try and reset your password
+
+- We didn't catch the error properly. Need to make an error variable and condition
+
+```JAVASCRIPT
+  const error = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : undefined;
+```
+
+- Need to pass the token to your `<Reset />` component `<Reset token={query.token} />`
+- In the `<Reset />` component, destructure the token and pass it in. And add to your `useFom()`
+
+```JAVASCRIPT
+export default function Reset({ token }) {
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: '',
+    token: token,
+  });
+```
+
+- Then when the form submits, the token will be passed along for the ride.
+- Try to request a reset, that password has expired.
+- Go back to the sign in page and request another token.
+- Request and check your terminal for the new token, don't have the email set up yet.
+- Copy the new token, and go to the `reset` page, and put the new token int he url bar with query param.
+- `localhost:7777/reset?token=TOKENHERE`
+-

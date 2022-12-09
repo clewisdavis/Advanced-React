@@ -5,35 +5,44 @@ import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY } from './User';
 import Error from './ErrorMessage';
 
-const REQUEST_RESET_MUTATION = gql`
-  mutation REQUEST_RESET_MUTATION($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $password: String!
+    $token: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      token: $token
+      password: $password
+    ) {
       code
       message
     }
   }
 `;
 
-export default function Reset() {
+export default function Reset({ token }) {
   const { inputs, handleChange, resetForm } = useForm({
     email: '',
     password: '',
-    token: '',
+    token,
   });
 
-  const [signup, { data, loading, error }] = useMutation(
-    REQUEST_RESET_MUTATION,
-    {
-      variables: inputs,
-      // refetch the currently logged in user
-      // refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    }
-  );
+  const [reset, { data, loading }] = useMutation(RESET_MUTATION, {
+    variables: inputs,
+  });
+
+  // make an error variable
+  const error = data?.redeemUserPasswordResetToken?.code
+    ? data?.redeemUserPasswordResetToken
+    : undefined;
+  console.log(error);
 
   async function handleSubmit(e) {
     e.preventDefault(); // Stop the form from submitting
     // console.log(inputs);
-    const res = await signup().catch(console.error);
+    const res = await reset().catch(console.error);
     console.log(res);
     console.log({ data, loading, error });
     resetForm();
@@ -51,8 +60,8 @@ export default function Reset() {
       <h2>Reset your Password</h2>
       <Error error={error} />
       <fieldset>
-        {data?.sendUserPasswordResetLink === null && (
-          <p>Success! Check your email for a link!</p>
+        {data?.redeemUserPasswordResetToken === null && (
+          <p>Success! You can now sign in</p>
         )}
         <label htmlFor="email">
           Email

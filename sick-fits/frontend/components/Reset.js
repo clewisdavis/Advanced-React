@@ -29,12 +29,12 @@ export default function Reset({ token }) {
     token,
   });
 
-  const [reset, { data, loading }] = useMutation(RESET_MUTATION, {
+  const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
     variables: inputs,
   });
 
   // make an error variable
-  const error = data?.redeemUserPasswordResetToken?.code
+  const successfulError = data?.redeemUserPasswordResetToken?.code
     ? data?.redeemUserPasswordResetToken
     : undefined;
   console.log(error);
@@ -58,7 +58,7 @@ export default function Reset({ token }) {
   return (
     <Form method="POST" onSubmit={handleSubmit}>
       <h2>Reset your Password</h2>
-      <Error error={error} />
+      <Error error={error || successfulError} />
       <fieldset>
         {data?.redeemUserPasswordResetToken === null && (
           <p>Success! You can now sign in</p>

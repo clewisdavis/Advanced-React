@@ -4015,4 +4015,9 @@ export default function Reset({ token }) {
 - Request and check your terminal for the new token, don't have the email set up yet.
 - Copy the new token, and go to the `reset` page, and put the new token int he url bar with query param.
 - `localhost:7777/reset?token=TOKENHERE`
--
+- Catch the successful Error and pass to the `<Error>` component, best to just watch video.
+
+## Password Reset - Sending an Email
+
+- Next, you want to email the password token to the user, so they can reset it.
+- Have to write some custom `Node.js` code in the `keystone.ts` file to do this.

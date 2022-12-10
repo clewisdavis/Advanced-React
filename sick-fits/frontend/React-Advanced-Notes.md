@@ -4021,3 +4021,9 @@ export default function Reset({ token }) {
 
 - Next, you want to email the password token to the user, so they can reset it.
 - Have to write some custom `Node.js` code in the `keystone.ts` file to do this.
+- Create a new file `lib/mail.ts`
+- And we create a transporter, allow us to hook up to an SMTP API and send out emails
+- When setting up emails in dev, best to make a fake service, or mail trap
+- mailtrap.io, or ethereal.email give you a set of usernames and passwords to use
+- For production, have to use a transactional email service, postmarkapp.com for example, or sendgrid, allows you to send actual real emails to users.
+- You never want to send real email in development

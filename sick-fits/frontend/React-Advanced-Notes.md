@@ -4026,4 +4026,45 @@ export default function Reset({ token }) {
 - When setting up emails in dev, best to make a fake service, or mail trap
 - mailtrap.io, or ethereal.email give you a set of usernames and passwords to use
 - For production, have to use a transactional email service, postmarkapp.com for example, or sendgrid, allows you to send actual real emails to users.
-- You never want to send real email in development
+- You never want to send real email in development, might accidently sent them to real customers
+
+- Go to etherreal.email and create an account. And it give you a username and password.
+- Just click the create account button, and it will give you a account.
+- Put that info in your environmental file, in your backend environment.
+- Replace the username and password in your `backend/.env` file with the username and password from your Etherreal account.
+- Kill it and restart, this will put our new values into our environmental variables
+
+- Then go back to `backend/lib/mail.ts` to create our transport.
+
+```JAVASCRIPT
+import { createTransport } from 'nodemailer';
+
+const transport = createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.PORT,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
+```
+
+- Next thing, write a function that will template out an email for us.
+
+```JAVASCRIPT
+function makeANiceEmail(text: string) {
+  return `
+      <div style="
+        border: 1px solid black;
+        padding: 20px;
+        font-family: sans-serif;
+        line-height: 2;
+        font-size: 20px;
+      ">
+        <h2>Hello There!</h2>
+        <p>${text}</p>
+        <p>Thank You, Ralph</p>
+      </div>
+    `;
+}
+```

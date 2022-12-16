@@ -4068,3 +4068,35 @@ function makeANiceEmail(text: string) {
     `;
 }
 ```
+
+- Backend function to send the email, in TypeScript
+
+```JAVASCRIPT
+interface MailResponse {
+  message: string;
+}
+
+// Function to send the email
+export async function sendPasswordResetEmail(
+  resetToken: string,
+  to: string
+): Promise<void> {
+  // email the user a token
+  const info = (await transport.sendMail({
+    to,
+    from: 'test@example.com',
+    subject: 'Your password reset token!',
+    html: makeANiceEmail(`Your Password Reset Token is here!
+    
+    <a href="${process.env.FRONTEND_URL}/reset?token=${resetToken}">Click Here to reset</a>
+    `),
+  })) as MailResponse;
+  console.log(info);
+}
+```
+
+- Errors on end to end password reset, unable to get running. Moving on.
+
+## Shopping Cart Development
+
+- Adding things to our cart.

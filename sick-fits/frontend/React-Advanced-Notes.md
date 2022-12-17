@@ -4100,3 +4100,37 @@ export async function sendPasswordResetEmail(
 ## Shopping Cart Development
 
 - Adding things to our cart.
+- Fist need to work on the back end, and create a new data type that is a cart item
+- The way works, have a user and user has a cart, the items in the users cart will be this new data type, cart item
+
+```JAVASCRIPT
+{
+  product: Link to an existing product
+  user: link to a user 
+  quantity: how many of that product user has
+}
+```
+
+- In the backend, go to `schemas` and duplicate, rename to `CartItem.ts` and update the method to be `CartItem`
+- Remove all the fields, make a new keystone list, with new fields
+- Two way relationship, a cart item will link to a user, and a user will link to cart item
+
+```JAVASCRIPT
+import { integer, relationship, select, text } from '@keystone-next/fields';
+import { list } from '@keystone-next/keystone/schema';
+
+export const CartItem = list({
+  // TODO
+  // access:
+  fields: {
+    quantity: integer({
+      defaultValue: 1,
+      isRequired: true,
+    }),
+    product: relationship({ ref: 'Product' }),
+    user: relationship({ ref: 'User.cart' }),
+  },
+});
+```
+
+- This we have a two way relationship,

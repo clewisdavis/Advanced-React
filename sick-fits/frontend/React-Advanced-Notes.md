@@ -4101,7 +4101,7 @@ export async function sendPasswordResetEmail(
 
 - Adding things to our cart.
 - Fist need to work on the back end, and create a new data type that is a cart item
-- The way works, have a user and user has a cart, the items in the users cart will be this new data type, cart item
+- The way works, have a user and user has a cart, the items in the users cart will be this new data type, `CartItem`
 
 ```JAVASCRIPT
 {
@@ -4133,4 +4133,55 @@ export const CartItem = list({
 });
 ```
 
-- This we have a two way relationship,
+- This we have a two way relationship, a `CartItem` will link to a user, and a user will link to a `CartItem`
+- That way we have a two way relationship, don't always have to update them on one side or another.
+- TODO: // Add a custom label, so you can tell the product, and not just the id.
+- In your backend, `keystone.ts` file, add the `CartItem` schema, make sure to import it.
+
+- Next thing, go into your `User.ts` and add a cart field.
+- Note: How we are doing two way relationship, the `CartItem.ts`, user is referencing `User.cart`, and the `User.ts`, cart is referencing the `CartItem.user`.
+- Set `many: true` meaning that you can have multiple relationships to cart items. If you want to have multiple things in your cart.
+
+- `User.ts`
+
+```JAVASCRIPT
+// Named Export
+export const User = list({
+  // access:
+  // ui
+  fields: {
+    name: text({ isRequired: true }),
+    email: text({ isRequired: true, isUnique: true }),
+    password: password(),
+    cart: relationship({
+      ref: 'CartItem.user',
+      many: true,
+    }),
+    // TODO, add roles, cart and orders
+  },
+});
+```
+
+- Summary:
+  - We created a new data type called `CartItem`
+  - We updated our user, `User.ts`
+  - And imported that cart item into our schema
+
+- Restart the backend, should see the Cart Item data type shows up in KeystoneJS
+- The Create Cart Item menu option will appear in your KeystoneJS app.
+- Create Cart Item
+- Now you see the list of cart items with a funky ID
+- You can customize what shows up in the data table list, and you can make those show up by default by going to our `CartItem = list()`
+
+```JAVASCRIPT
+ui: {
+    listView: {
+      initialColumns: ['product', 'quantity', 'user'],
+    },
+  },
+```
+
+- Restart the backend to see it take affect.
+- That's it for creating our initial cart value.
+
+## Cart - Displaying items in a Custom Component

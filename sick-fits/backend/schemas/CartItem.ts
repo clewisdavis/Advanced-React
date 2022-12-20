@@ -3,6 +3,11 @@ import { list } from '@keystone-next/keystone/schema';
 
 export const CartItem = list({
   // TODO: Custom label in here
+  ui: {
+    listView: {
+      initialColumns: ['product', 'quantity', 'user'],
+    },
+  },
   fields: {
     quantity: integer({
       defaultValue: 1,

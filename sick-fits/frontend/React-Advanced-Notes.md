@@ -4185,3 +4185,44 @@ ui: {
 - That's it for creating our initial cart value.
 
 ## Cart - Displaying items in a Custom Component
+
+- Add a couple things to your cart
+- Make a new component `components/Cart.js`
+- Import your styled components, `<CartStyles/>` from  `styles/CartStyles`
+- Create a basic cart components
+
+```JAVASCRIPT
+import CartStyles from './styles/CartStyles';
+
+export default function Cart() {
+  return <CartStyles>HELLO</CartStyles>;
+}
+```
+
+- Add the cart to your `Header.js`
+
+```JAVASCRIPT
+export default function Header() {
+  return (
+    <HeaderStyles>
+      <div className="bar">
+        <Logo>
+          <Link href="/">Sick Fits</Link>
+        </Logo>
+        <Nav />
+      </div>
+      <div className="sub-bar">
+        <p>Search</p>
+      </div>
+      <Cart />
+    </HeaderStyles>
+  );
+}
+```
+
+- One more thing, to make it show up, pass it a parameter, open or close. `open={true}`
+- In the styled component for cart `CartStyles.js`, Wes has adding some JS to slide in if the parameter is open
+
+```JAVASCRIPT
+${(props) => props.open && `transform: translateX(0);`};
+```

@@ -4226,3 +4226,92 @@ export default function Header() {
 ```JAVASCRIPT
 ${(props) => props.open && `transform: translateX(0);`};
 ```
+
+- In the style sheet, the default is `transform: translateX(100%);` which puts it off screen, then when it has a prop of `open` it will slide it on in.
+- In the next video, we will make an open and close button
+
+- Now, need a list of all the cart items a user has.
+- Add the `userUser()` method
+
+```JAVASCRIPT
+import CartStyles from './styles/CartStyles';
+import { useUser } from './User';
+
+export default function Cart() {
+  const me = useUser();
+  return <CartStyles open>{me.email}</CartStyles>;
+}
+```
+
+- In the `components/User.js`, need to update the query to include the cart.
+
+```JAVASCRIPT
+        cart {
+          id
+          quantity
+          product {
+            id
+            price
+            name
+            description
+            photo {
+              image {
+                publicUrlTransformed
+              }
+            }
+          }
+        }
+```
+
+- Back to cart and add a conditional if no user, cannot view cart when not signed in.
+
+```JAVASCRIPT
+export default function Cart() {
+  const me = useUser();
+  if (!me) return null;
+  return <CartStyles open>{me.email}</CartStyles>;
+}
+```
+
+- console.log the `me` value to see the products in your cart.
+- Now we can start to loop over it and render out.
+- Template it out, `import` the styled component `styles/Supreme` and add a heading to your cart.
+
+```JAVASCRIPT
+  return (
+    <CartStyles open>
+      <header>
+        <Supreme>{me.name}'s Cart</Supreme>
+      </header>
+    </CartStyles>
+  );
+```
+
+- Then create an un-ordered list to loop over.
+- Use `.map()` to iterate over the cart items. And create a `<CartItem />` component with `key` and pass in the item
+
+```JAVASCRIPT
+  return (
+    <CartStyles open>
+      <header>
+        <Supreme>{me.name}'s Cart</Supreme>
+      </header>
+      <ul>
+        {me.cart.map((cartItem) => (
+          <CartItem key={cartItem.id} cartItem={cartItem} />
+        ))}
+      </ul>
+    </CartStyles>
+  );
+```
+
+- Create the `<CartItem>` component, you can make it it's own file, or just to it all in the existing `Cart.js` file.
+
+```JAVASCRIPT
+// Cart Item Component
+function CartItem({ cartItem }) {
+  return <li>{cartItem.id}</li>;
+}
+```
+
+- Now in your cart, you can see the id's listed out.

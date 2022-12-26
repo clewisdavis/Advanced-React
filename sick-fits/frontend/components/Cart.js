@@ -1,10 +1,40 @@
+import styled from 'styled-components';
 import CartStyles from './styles/CartStyles';
 import Supreme from './styles/Supreme';
 import { useUser } from './User';
 
+// Styled Component
+const CartItemStyles = styled.li`
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--lightGrey);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  img {
+    margin-right: 1rem;
+  }
+  h3,
+  p {
+    margin: 0;
+  }
+`;
+
 // Cart Item Component
 function CartItem({ cartItem }) {
-  return <li>{cartItem.id}</li>;
+  const { product } = cartItem;
+  if (!product) return null;
+  console.log(product);
+  return (
+    <CartItemStyles>
+      <img
+        width="100"
+        src={product.photo.image.publicUrlTransformed}
+        atl={product.name}
+      />
+      <div>
+        <h3>{product.name}</h3>
+      </div>
+    </CartItemStyles>
+  );
 }
 
 export default function Cart() {

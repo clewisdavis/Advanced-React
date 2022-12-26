@@ -4315,3 +4315,50 @@ function CartItem({ cartItem }) {
 ```
 
 - Now in your cart, you can see the id's listed out.
+- Now, need to write out and create a styled component for our cart items
+
+```JAVASCRIPT
+// Styled Component
+const CartItemStyles = styled.li`
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--lightGrey);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  img {
+    margin-right: 1rem;
+  }
+  h3,
+  p {
+    margin: 0;
+  }
+`;
+```
+
+- Add the styled component to your `CartItem` component.
+
+```JAVASCRIPT
+// Cart Item Component
+function CartItem({ cartItem }) {
+  return <CartItemStyles>{cartItem.id}</CartItemStyles>;
+}
+```
+
+- Add photo for each cart item
+- And a condition for when nothing in cart, `if (!product) return null;`
+
+```JAVASCRIPT
+// Cart Item Component
+function CartItem({ cartItem }) {
+  const { product } = cartItem;
+  if (!product) return null;
+  return (
+    <CartItemStyles>
+      <img
+        width="100"
+        src={product.photo.image.publicUrlTransformed}
+        atl={product.name}
+      />
+    </CartItemStyles>
+  );
+}
+```

@@ -4362,3 +4362,47 @@ function CartItem({ cartItem }) {
   );
 }
 ```
+
+- Bring in the other information into the cart.
+- Import and use the `formatMoney()` function in your `lib` folder.
+
+```JAVASCRIPT
+  return (
+    <CartItemStyles>
+      <img
+        width="100"
+        src={product.photo.image.publicUrlTransformed}
+        atl={product.name}
+      />
+      <div>
+        <h3>{product.name}</h3>
+        <p>{formatMoney(product.price * cartItem.quantity)}</p>
+      </div>
+    </CartItemStyles>
+  );
+```
+
+- Add more descriptions to the cart. Total price and each.
+
+```JAVASCRIPT
+  return (
+    <CartItemStyles>
+      <img
+        width="100"
+        src={product.photo.image.publicUrlTransformed}
+        atl={product.name}
+      />
+      <div>
+        <h3>{product.name}</h3>
+        <p>
+          {formatMoney(product.price * cartItem.quantity)} -
+          <em>
+            {cartItem.quantity} &times; {formatMoney(product.price)} each
+          </em>
+        </p>
+      </div>
+    </CartItemStyles>
+  );
+```
+
+- Make a new function to total the price, `lib/calcTotalPrice.js` in new file.

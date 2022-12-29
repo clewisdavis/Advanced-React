@@ -4406,3 +4406,43 @@ function CartItem({ cartItem }) {
 ```
 
 - Make a new function to total the price, `lib/calcTotalPrice.js` in new file.
+- Calculates the total price of cart, and import into your `Cart.js`
+
+```JAVASCRIPT
+// Calculate total price for cart
+export default function calcTotalPrice(cart) {
+  return cart.reduce((tally, cartItem) => {
+    if (!cartItem.product) return tally; // products can be deleted, but they still be in  your cart
+    return tally + cartItem.quantity * cartItem.product.price;
+  }, 0);
+}
+```
+
+- Add to your cart
+
+```JAVASCRIPT
+export default function Cart() {
+  const me = useUser();
+  if (!me) return null;
+  console.log(me);
+  return (
+    <CartStyles open>
+      <header>
+        <Supreme>{me.name}'s Cart</Supreme>
+      </header>
+      <ul>
+        {me.cart.map((cartItem) => (
+          <CartItem key={cartItem.id} cartItem={cartItem} />
+        ))}
+      </ul>
+      <footer>
+        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+      </footer>
+    </CartStyles>
+  );
+}
+```
+
+## Cart - Using React Context for Cart State
+
+-

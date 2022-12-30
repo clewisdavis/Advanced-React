@@ -4445,4 +4445,41 @@ export default function Cart() {
 
 ## Cart - Using React Context for Cart State
 
--
+- Local state, local state that exist in the browser.
+- Forms, is an example of local state.
+- We need local state for the cart, open or closed.
+- Needs to be changed in a lot of differ places, open and close it no matter where you are in application.
+- Both state needs to exist in cart, and updater function, needs to exist where ever we want it.
+- Define that at a high level and pass it down.
+- So we need to put it in `context`. Allow us to define data, or functionality at a very high level. At the top of our application.
+- And you can access that functionality at much lower levels. Without having to pass it down via `props` like we normally would.
+- Passing props is good, but really hard when your component is deep in the application, 7 or 8 levels deep.
+
+- Going to create a new file, called `cartState.js` and stick it in your `lib` folder.
+- Two parts to the `cartState`
+- `Provider`, live at a high level in your app. Will store state and updater functions.
+- `Consumer`, to access that information anywhere in your app. Consumer is able to talk to the provider, and get those things from the Provider w/o having a direct link to them via props.
+
+- We are going to make our `Provider`
+
+```JAVASCRIPT
+import { createContext } from 'react';
+
+// Create the Provider
+const LocalStateContext = createContext();
+const LocalStateProvider = LocalStateContext.Provider;
+```
+
+- And create a `Consumer`
+
+```JAVASCRIPT
+import { createContext } from 'react';
+
+// Create the Provider
+const LocalStateContext = createContext();
+const LocalStateProvider = LocalStateContext.Provider;
+
+function CartStateProvider({ children }) {
+  // This is our own custom provider! We will store data (state, functionality) in here and anyone can access it via the consumer.
+}
+```

@@ -4483,3 +4483,64 @@ function CartStateProvider({ children }) {
   // This is our own custom provider! We will store data (state, functionality) in here and anyone can access it via the consumer.
 }
 ```
+
+- How you take data, and open it up so others can consume it.
+- In your `<LocalStateProvider>` component, add a `value={{}}` and any value that gets passed in, will be available anywhere in your application.
+- And we are going to pass in the `cartOpen` variable we created.
+
+```JAVASCRIPT
+function CartStateProvider({ children }) {
+  // This is our own custom provider! We will store data (state, functionality) in here and anyone can access it via the consumer.
+
+  const cartOpen = true;
+
+  return (
+    <LocalStateProvider value={{ cartOpen }}>{children}</LocalStateProvider>
+  );
+}
+```
+
+- Then you export your `CartStateProvider`, full component below
+
+```JAVASCRIPT
+import { createContext } from 'react';
+
+// Create the Provider
+const LocalStateContext = createContext();
+const LocalStateProvider = LocalStateContext.Provider;
+
+function CartStateProvider({ children }) {
+  // This is our own custom provider! We will store data (state, functionality) in here and anyone can access it via the consumer.
+
+  const cartOpen = true;
+
+  return (
+    <LocalStateProvider value={{ cartOpen }}>{children}</LocalStateProvider>
+  );
+}
+
+export { CartStateProvider };
+```
+
+- Now, you stick this at a high level in your application. Most likely in your `_app.js` or in your `_page.js`
+- So the date will persist page to page.
+
+- In our `_app.js`, add the provider. We are going to wrap `<CartStateProvider>` in our `MyApp` component.
+- Now you should have access, if you inspect in React Dev tools, you will see `CartStateProvider`
+
+```JAVASCRIPT
+function MyApp({ Component, pageProps, apollo }) {
+  // console.log(apollo);
+  return (
+    <ApolloProvider client={apollo}>
+      <CartStateProvider>
+        <Page>
+          <Component {...pageProps} />
+        </Page>
+      </CartStateProvider>
+    </ApolloProvider>
+  );
+}
+```
+
+- To access that data, you need to write a custom hook.

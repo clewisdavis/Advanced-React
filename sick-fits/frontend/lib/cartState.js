@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 // Create the Provider
 const LocalStateContext = createContext();
@@ -14,4 +14,11 @@ function CartStateProvider({ children }) {
   );
 }
 
-export { CartStateProvider };
+// make a custom hook for accessing the cart local state
+function useCart() {
+  // We use a consumer here to access the local state
+  const all = useContext(LocalStateContext);
+  return all;
+}
+
+export { CartStateProvider, useCart };

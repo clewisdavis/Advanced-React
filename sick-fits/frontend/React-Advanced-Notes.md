@@ -4543,4 +4543,40 @@ function MyApp({ Component, pageProps, apollo }) {
 }
 ```
 
-- To access that data, you need to write a custom hook.
+- To access that data, you need to write a custom hook in your `cartState.js`
+
+```JAVASCRIPT
+// make a custom hook for accessing the cart local state
+function useCart() {
+  const all = useContext(LocalStateContext);
+  return all;
+}
+```
+
+- `useContext` is our consumer end, from our consumer and provider.
+- When we want to access the data, we can simply use the `useCart()` hook. And it will access the values from `LocalStateContext`
+- Now you can export that `useCart` value
+
+```JAVASCRIPT
+export { CartStateProvider, useCart };
+```
+
+- Now we can go anywhere in our application and get access to that data.
+
+- Go to your `Cart.js` component and add it to the `Cart()` and console log it.
+
+```JAVASCRIPT
+export default function Cart() {
+  const data = useCart();
+  console.log(data);
+  // ...rest of component
+}
+```
+
+- In the console, you can see the `cartOpen: true` value.
+- So what did we do?
+- We defined our cart state at a high level. `const cartOpen = true;`
+- Then we can use it anywhere we want, my simply calling `useCart()`
+- We can take that data, and destructure it. `const { cartOpen } = useCart();`
+
+- You can pass that `cartOpen` value to your `<CartStyles open={cartOpen}>` component.

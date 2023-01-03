@@ -49,7 +49,7 @@ function CartItem({ cartItem }) {
 
 export default function Cart() {
   const me = useUser();
-  const { cartOpen } = useCart();
+  const { cartOpen, closeCart } = useCart();
   console.log(cartOpen);
   if (!me) return null;
   return (
@@ -57,6 +57,7 @@ export default function Cart() {
       <header>
         <Supreme>{me.name}'s Cart</Supreme>
       </header>
+      <button onClick={closeCart}>&times;</button>
       <ul>
         {me.cart.map((cartItem) => (
           <CartItem key={cartItem.id} cartItem={cartItem} />

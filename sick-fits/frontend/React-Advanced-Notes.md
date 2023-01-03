@@ -4580,3 +4580,83 @@ export default function Cart() {
 - We can take that data, and destructure it. `const { cartOpen } = useCart();`
 
 - You can pass that `cartOpen` value to your `<CartStyles open={cartOpen}>` component.
+- Now in your `cartState.js` you can change the value form `true` to `false` and it will hide the cart panel.
+- That value should live in state. So we will replace that with.
+
+```JAVASCRIPT
+//   const cartOpen = true;
+const [cartOpen, setCartOpen] = useState(false);
+```
+
+- And by default, we will set it to closed, `false`
+- Create some helper functions, in your `<CartStateProvider>` and add them to your `<LocalStateProvider>`
+
+```JAVASCRIPT
+  //   const cartOpen = true;
+  const [cartOpen, setCartOpen] = useState(false);
+
+  // helper functions
+  function toggleCart() {
+    // the ! in JS will just give us the opposite of true or false
+    setCartOpen(!cartOpen);
+  }
+
+  function closeCart() {
+    setCartOpen(false);
+  }
+
+  function openCart() {
+    setCartOpen(true);
+  }
+```
+
+- Add them to your `<LocalStateProvider>`
+
+```JAVASCRIPT
+  return (
+    <LocalStateProvider
+      value={{ cartOpen, setCartOpen, toggleCart, closeCart, openCart }}
+    >
+      {children}
+    </LocalStateProvider>
+  );
+```
+
+- Go back to your `Cart.js` component, and add a button to close the cart.
+
+```JAVASCRIPT
+<button onClick={closeCart}>&times;</button>
+```
+
+- And add it to your nav component so you can open it.
+- Make sure to import the `useCart()` function.
+- And define `openCart`
+
+```JAVASCRIPT
+// Nav.js
+export default function Nav() {
+  const user = useUser();
+  const { openCart } = useCart();
+  return (
+    <NavStyles>
+      <Link href="/products">Product</Link>
+      {user && (
+        <>
+          <Link href="/sell">Sell</Link>
+          <Link href="/orders">Orders</Link>
+          <Link href="/account">Account</Link>
+          <SignOut />
+          <button type="button" onClick={openCart}>
+            My Cart
+          </button>
+        </>
+      )}
+      {!user && (
+        <>
+          <Link href="/signin">Sign In</Link>
+        </>
+      )}
+    </NavStyles>
+  );
+}
+```

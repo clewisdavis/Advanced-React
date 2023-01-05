@@ -7,8 +7,8 @@ const LocalStateProvider = LocalStateContext.Provider;
 function CartStateProvider({ children }) {
   // This is our own custom provider! We will store data (state, functionality) in here and anyone can access it via the consumer.
 
-  //   const cartOpen = true;
-  const [cartOpen, setCartOpen] = useState(true);
+  // Want this to be closed by default
+  const [cartOpen, setCartOpen] = useState(false);
 
   // helper functions
   function toggleCart() {

@@ -4660,3 +4660,9 @@ export default function Nav() {
   );
 }
 ```
+
+- Now you should be able to click open cart and the close button. And it will open and close the panel.
+- Set the default to `false` so the cart is closed.
+- Update the styling for your close button.
+- `<CloseButton onClick={closeCart}>&times;</CloseButton>` and import it from your styles.
+- That's it for `LocalStateContext`, you can use anywhere.

@@ -4666,3 +4666,88 @@ export default function Nav() {
 - Update the styling for your close button.
 - `<CloseButton onClick={closeCart}>&times;</CloseButton>` and import it from your styles.
 - That's it for `LocalStateContext`, you can use anywhere.
+
+## Cart - Adding Items to the Cart
+
+- Create your own custom mutation for the cart, you can use the default, but for this section, create a custom one. To account for adding the same item multiple times to cart.
+- In your backend environment, make a new file called `mutations/index.ts`
+- Write the custom mutation
+
+```JAVASCRIPT
+// backend, mutations/inded.ts
+import { graphQLSchemaExtension } from '@keystone-next/keystone/schema';
+
+// make a fake graphql tagged template literal
+const graphql = String.raw;
+
+export const extendGraphqlSchema = graphQLSchemaExtension({
+  typeDefs: graphql`
+    type Mutation {
+      addToCart(productID: ID): CartItem
+    }
+  `,
+  resolvers: {
+    Mutation: {
+      addToCart() {
+        // custom code goes here
+        console.log('ADD TO CART!!');
+      },
+    },
+  },
+});
+```
+
+- Now you have to tell Keystone about it, before it will show up in your graphql explorer.
+
+```JAVASCRIPT
+// KEYSTONE.TS FILE
+export default withAuth(
+  config({
+    // existing configs, add new schema
+    extendGraphqlSchema,
+  })
+);
+```
+
+- Now if you restart the backend and check your graphql explorer, should see it in the docs.
+- Go to Docs, and search for `addToCart`
+- Create a new file for each of these custom resolvers.
+- Make a new file, called `mutations/addToCart` in the backend.
+
+```JAVASCRIPT
+import { KeystoneContext } from '@keystone-next/types';
+
+export default function addToCart(
+  root: any,
+  { productId }: { productId: string },
+  context: KeystoneContext
+) {
+  console.log('Adding to cart!');
+}
+```
+
+- Then update the resolvers inside `mutations/index.ts` file, and the new `addToCart` you just created side of the backend, `mutations/addToCart.ts`
+- Don't forget to import it.
+
+```JAVASCRIPT
+  // mutations/index.ts
+  resolvers: {
+    Mutation: {
+      addToCart,
+    },
+  },
+```
+
+- Kill the terminal and restart it.
+- Now, in your API explorer, you can write a mutation for `addToCart`
+
+```JAVASCRIPT
+mutation {
+  addToCart(productID: "ABC123") {
+    id
+    quantity
+  }
+}
+```
+
+- And in your console for the backend, will return your console log.

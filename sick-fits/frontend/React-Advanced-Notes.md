@@ -4799,3 +4799,85 @@ export default addToCart;
 ```
 
 ## Cart - Addint Items to the cart in React
+
+- Need to make an add to cart button
+- Create a new component, `AddToCart.js`
+
+```JAVASCRIPT
+export default function AddToCart({ id }) {
+  return <button type="button">Add To Cart 🛒</button>;
+}
+```
+
+- Then create a new gql mutation and add it to your component.
+
+```JAVASCRIPT
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+
+const ADD_TO_CART_MUTATION = gql`
+  mutation ADD_TO_CART_MUTATION($id: ID!) {
+    addToCart(productId: $id) {
+      id
+    }
+  }
+`;
+
+export default function AddToCart({ id }) {
+  const [addToCart, { loading }] = useMutation(ADD_TO_CART_MUTATION, {
+    variables: { id },
+  });
+  return <button type="button">Add To Cart 🛒</button>;
+}
+```
+
+- Within your `Products.js` file, import and use the `<AddToCart>` component.
+- Now the button is displayed on the product tile.
+- Add the `onclick` method to the component. `onClick={addToCart}`
+- When you click on the add to cart button, it adds the product but you have to manually refresh to see it.
+- Next we need to visually show the product being added to the cart.
+
+- Add a loading to the add to cart button.
+- And on your query, refetch the query so it will update the count and price on the cart.
+
+```JAVASCRIPT
+// AddToCart.js
+export default function AddToCart({ id }) {
+  const [addToCart, { loading }] = useMutation(ADD_TO_CART_MUTATION, {
+    variables: { id },
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
+  return (
+    <button type="button" disabled={loading} onClick={addToCart}>
+      Add{loading && 'ing'} To Cart 🛒
+    </button>
+  );
+}
+```
+
+## Cart - Animatin gthe Cart Value
+
+- Displaying the number of items in the cart.
+- Make a new component called `CartCount.js` and create a base component
+
+```JAVASCRIPT
+import styled from 'styled-components';
+
+const Dot = styled.div`
+  background: var(--red);
+  color: white;
+`;
+
+export default function CartCount({ count }) {
+  return <Dot>{count}</Dot>;
+}
+```
+
+- Integrate into your nav. Add to your cart button.
+
+```JAVASCRIPT
+  <button type="button" onClick={openCart}>
+      My Cart
+      <CartCount count={2} />
+  </button>
+```

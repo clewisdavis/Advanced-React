@@ -4881,3 +4881,72 @@ export default function CartCount({ count }) {
       <CartCount count={2} />
   </button>
 ```
+
+- Now hook it up
+
+```JAVASCRIPT
+          <button type="button" onClick={openCart}>
+            My Cart
+            <CartCount
+              count={user.cart.reduce(
+                (tally, cartItem) => tally + cartItem.quantity,
+                0
+              )}
+            />
+          </button>
+```
+
+- Now when you add an item to your cart, it will update.
+- Add some styles to your count circle.
+- Note: The `tnum` and `tabular-nums` properties, prevents the numbers from shifting.
+
+```JAVASCRIPT
+const Dot = styled.div`
+  background: var(--red);
+  color: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  line-height: 2rem;
+  min-width: 3rem;
+  margin-left: 1rem;
+  // prevents the number shift, makes them all the same width
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+`;
+```
+
+- Add some basic animation, with React, for the count
+- Add the `<TransitionGroup>` component to your `CardCount`
+- And wrap your `<Dot>` element
+- Make sure you import the Transition Group
+
+```JAVASCRIPT
+export default function CartCount({ count }) {
+  return (
+    <TransitionGroup>
+      <Dot>{count}</Dot>;
+    </TransitionGroup>
+  );
+}
+```
+
+- Add `<CSSTransition>` around the `<Dot>` item.
+- And the CSS transition properties, this will allow us to hook onto some class names and create some CSS effects.
+
+```JAVASCRIPT
+export default function CartCount({ count }) {
+  return (
+    <TransitionGroup>
+      <CSSTransition
+        unmountOnExit
+        className="count"
+        classNames="count"
+        key={count}
+        timeout={{ enter: 4000, exit: 4000 }}
+      >
+        <Dot>{count}</Dot>
+      </CSSTransition>
+    </TransitionGroup>
+  );
+}
+```

@@ -4950,3 +4950,135 @@ export default function CartCount({ count }) {
   );
 }
 ```
+
+- And to add some animation to the component, create a new style component.
+- Then wrap it around you component.
+
+```JAVASCRIPT
+const AnimationStyles = styled.span`
+  position: relative;
+  .count-enter {
+    background: green;
+  }
+  .count-enter-active {
+    background: yellow;
+  }
+  .count-exit-active {
+    background: pink;
+  }
+`;
+```
+
+- Add the transition styles to the classes to give the effect to the count.
+
+```JAVASCRIPT
+const AnimationStyles = styled.span`
+  position: relative;
+  .count {
+    display: block;
+    position: relative;
+    transition: transform 0.4s;
+    backface-visibility: hidden;
+  }
+  .count-enter {
+    transform: scale(4) rotateX(0.5turn);
+  }
+  .count-enter-active {
+    transform: rotateX(0);
+    background: green;
+  }
+  .count-exit {
+    top: 0;
+    position: absolute;
+    transform: rotateX(0);
+  }
+  .count-exit-active {
+    transform: scale(4) rotateX(0.5turn);
+  }
+`;
+```
+
+- TIP: Anytime you want to figure out which styles are doing what. Increase the `timeout` within your CSSTransition component.
+
+```JAVASCRIPT
+export default function CartCount({ count }) {
+  return (
+    <AnimationStyles>
+      <TransitionGroup>
+        <CSSTransition
+          unmountOnExit
+          className="count"
+          classNames="count"
+          key={count}
+          timeout={{ enter: 400, exit: 400 }}
+        >
+          <Dot>{count}</Dot>
+        </CSSTransition>
+      </TransitionGroup>
+    </AnimationStyles>
+  );
+}
+```
+
+- Full `CartCount` component with animation.
+
+```JAVASCRIPT
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import styled from 'styled-components';
+
+const Dot = styled.div`
+  background: var(--red);
+  color: white;
+  border-radius: 50%;
+  padding: 0.5rem;
+  line-height: 2rem;
+  min-width: 3rem;
+  margin-left: 1rem;
+  // prevents the number shift, makes them all the same width
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+`;
+
+const AnimationStyles = styled.span`
+  position: relative;
+  .count {
+    display: block;
+    position: relative;
+    transition: transform 0.4s;
+    backface-visibility: hidden;
+  }
+  .count-enter {
+    transform: scale(4) rotateX(0.5turn);
+  }
+  .count-enter-active {
+    transform: rotateX(0);
+    background: green;
+  }
+  .count-exit {
+    top: 0;
+    position: absolute;
+    transform: rotateX(0);
+  }
+  .count-exit-active {
+    transform: scale(4) rotateX(0.5turn);
+  }
+`;
+
+export default function CartCount({ count }) {
+  return (
+    <AnimationStyles>
+      <TransitionGroup>
+        <CSSTransition
+          unmountOnExit
+          className="count"
+          classNames="count"
+          key={count}
+          timeout={{ enter: 400, exit: 400 }}
+        >
+          <Dot>{count}</Dot>
+        </CSSTransition>
+      </TransitionGroup>
+    </AnimationStyles>
+  );
+}
+```

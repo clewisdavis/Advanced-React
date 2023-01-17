@@ -6,6 +6,7 @@ import formatMoney from '../lib/formatMoney';
 import { useUser } from './User';
 import calcTotalPrice from '../lib/calcTotalPrice';
 import { useCart } from '../lib/cartState';
+import RemoveFromCart from './RemoveFromCart';
 
 // Styled Component
 const CartItemStyles = styled.li`
@@ -42,6 +43,7 @@ function CartItem({ cartItem }) {
           </em>
         </p>
       </div>
+      <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
   );
 }

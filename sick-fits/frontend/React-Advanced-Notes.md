@@ -5082,3 +5082,80 @@ export default function CartCount({ count }) {
   );
 }
 ```
+
+## Remove from Cart Button
+
+- Creating a button
+- Creating a mutation, `deleteCartItem`, not custom, built in Keystone API
+
+- Create a new component, `RemoveFromCart.js` and create a styled component.
+
+```JAVASCRIPT
+import styled from 'styled-components';
+
+const BigButton = styled.button`
+  font-size: 3rem;
+  background: none;
+  border: 0;
+  &:hover {
+    color: var(--red);
+    cursor: pointer;
+  }
+`;
+
+export default function RemoveFromCart({ id }) {
+  return (
+    <BigButton title="Remove this item form cart" type="button">
+      &times;
+    </BigButton>
+  );
+}
+```
+
+- Add it to your existing `Cart.js` and pass it in the `product.id`.
+
+```JAVASCRIPT
+<RemoveFromCart id={cartItem.id} />
+```
+
+- Next we will code up the mutation.
+
+```JAVASCRIPT
+const REMOVE_FROM_CART_MUTATION = gql`
+  mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
+    deleteCartItem(id: $id) {
+      id
+    }
+  }
+`;
+```
+
+- Then add the mutation to your component
+
+```JAVASCRIPT
+  const [removeFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
+    variables: { id },
+  });
+```
+
+- Now when someone clicks on this button, we will run the `removeFromCart`
+- Add the `onClick` and the `disabled` props.
+
+```JAVASCRIPT
+  return (
+    <BigButton
+      onClick={removeFromCart}
+      disabled={loading}
+      title="Remove this item form cart"
+      type="button"
+    >
+      &times;
+    </BigButton>
+  );
+```
+
+- Now, when you click the close button, it will remove, but you have to refresh the page.
+
+## Cart - Removing items from cart from the cache
+
+- Visually removing items from the cart without reloading page.

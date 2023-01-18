@@ -5159,3 +5159,38 @@ const REMOVE_FROM_CART_MUTATION = gql`
 ## Cart - Removing items from cart from the cache
 
 - Visually removing items from the cart without reloading page.
+- A fast way, is to remove that item from cache.
+- Create an update function, and when someone removes an item from the cart, it will run update.
+
+```JAVASCRIPT
+function update(cache, payload) {
+
+}
+```
+
+- And pass in the `cache` and `payload`, this will give us both access to the Apollo cache, as well as the payload from the API.
+- To identify what item to remove, use `cache.identify`
+
+```JAVASCRIPT
+function update(cache, payload) {
+  cache.evict(cache.identify(payload.data.deleteCartItem));
+}
+```
+
+- And add the `update` function to your `usemutation` function.
+
+```JAVASCRIPT
+  const [removeFromCart, { loading }] = useMutation(REMOVE_FROM_CART_MUTATION, {
+    variables: { id },
+    update,
+  });
+```
+
+- Now when you remove an item from your cart, it should remove it from the list.
+- One more step to make faster, optimistic response.
+- optimistic response, when it's pretty sure what is going to come back from the server. So it will immediately give you a fake response that will match what the server will give you.
+- Unable to find a solution to make this work.
+
+## Search
+
+- Adding a search component

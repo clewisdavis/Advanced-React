@@ -5194,3 +5194,74 @@ function update(cache, payload) {
 ## Search
 
 - Adding a search component
+- Make a new `component/Search.js` component.
+- Create a base component.
+
+```JAVASCRIPT
+import { SearchStyles } from './styles/DropDown';
+
+export default function Search() {
+  return (
+    <SearchStyles>
+      <p>Hey</p>
+    </SearchStyles>
+  );
+}
+```
+
+- In the header, import and place the `<Search />` component in the sub-bar.
+- Add a little more markup it the search component.
+
+```JAVASCRIPT
+export default function Search() {
+  return (
+    <SearchStyles>
+      <div>
+        <input type="search" />
+      </div>
+      <DropDown>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+      </DropDown>
+    </SearchStyles>
+  );
+}
+```
+
+- Base markup for the seach
+- Going to use a third party package for the drop down, downshift. Makes the dropdown accessible.
+- <https://www.downshift-js.com/>
+- Import downshift, and the basics to get it up and running.
+
+```JAVASCRIPT
+export default function Search() {
+  const { getMenuProps, getInputProps, getComboboxProps } = useCombobox({
+    items: [],
+    // fires when select the box
+    onInputValueChange() {
+      console.log('Input Change');
+    },
+    // fire when select an item
+    onSelectedItemChange() {
+      console.log('Selected Item Change');
+    },
+  });
+  return (
+    <SearchStyles>
+      <div>
+        <input type="search" />
+      </div>
+      <DropDown>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+      </DropDown>
+    </SearchStyles>
+  );
+}
+```
+
+- Next, we take the methods we created `getMenuProps, getInputProps, getComboboxProps` and spread them into the differ elements. These methods makes it keyboard accessible.

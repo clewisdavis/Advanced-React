@@ -5265,3 +5265,123 @@ export default function Search() {
 ```
 
 - Next, we take the methods we created `getMenuProps, getInputProps, getComboboxProps` and spread them into the differ elements. These methods makes it keyboard accessible.
+- Add downshift to your `Search` component. Pass in the attributes you want on the input.
+
+```JAVASCRIPT
+  return (
+    <SearchStyles>
+      <div {...getComboboxProps()}>
+        <input
+          {...getInputProps({
+            type: 'search',
+            placeholder: 'Search for an Item',
+            id: 'search',
+            className: 'loading',
+          })}
+        />
+      </div>
+      <DropDown>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+        <DropDownItem>Hey</DropDownItem>
+      </DropDown>
+    </SearchStyles>
+  );
+```
+
+- Note: add `resetIdCounter();` to the beginning of your component to prevent errors.
+- Don't forget to add the `getMenuProps` to your `<DropDown>` component.
+
+```JAVASCRIPT
+      <DropDown {...getMenuProps()}>
+```
+
+- Next thing we need to do is write a query to find the elements from our graphql API as the user searches for them.
+
+- Write the graphql query.
+
+```JAVASCRIPT
+const SEARCH_PRODUCTS_QUERY = gql`
+  query SEARCH_PRODUCTS_QUERY($searchTerm: String!) {
+    searchTerms: allProducts(
+      where: {
+        OR: [
+          { name_contains_i: $searchTerm }
+          { description_contains_i: $searchTerm }
+        ]
+      }
+    ) {
+      id
+      name
+      photo {
+        image {
+          publicTransformed
+        }
+      }
+    }
+  }
+`;
+```
+
+- Then we add it to the component, but we want it to fire off when we want, not on pageload.
+- Add the query, using `useLazyQuery()`
+
+```JAVASCRIPT
+export default function Search() {
+  const [findItems, { loading, data, error }] = useLazyQuery(
+    SEARCH_PRODUCTS_QUERY,
+    {
+      fetchPolicy: 'no-cache',
+    }
+  );
+  // rest of component
+```
+
+- When searching, you don't want it to fire off to often, and bog down your system everytime it makes a call.
+- De-bouncing a function, fire the function but wait a moment before making the call.
+- Fire off 6 times within a second, and wait for one second
+- Use `debounce()` from lodash, make sure to import it.
+- Then create a new variable and pass in the `findItems`
+
+```JAVASCRIPT
+  const findItemsButChill = debounce(findItems, 350);
+```
+
+- Pass in the two arguments, `findItems` and the time `350` in milliseconds.
+- So now, every 350 milliseconds, it will run the network request `findItemsButChill`
+- Add it to your `onInputValueChange()` and it will run it.
+
+- Next thing need to do is pass the value of the input box, to the variable.
+
+```JAVASCRIPT
+  const { inputValue, getMenuProps, getInputProps, getComboboxProps } =
+    useCombobox({
+      items: [],
+      // fires when select the box
+      onInputValueChange() {
+        console.log('Input Change');
+        findItemsButChill({
+          // pass in the value of the input box
+          variables: {
+            searchTerm: inputValue,
+          },
+        });
+      },
+      // fire when select an item
+      onSelectedItemChange() {
+        console.log('Selected Item Change');
+      },
+    });
+```
+
+- Not returning results for me, moving forward.
+- Add to your `<DropDown>` component. It's supposed to render the items maching what you put in the field.
+
+```JAVASCRIPT
+      <DropDown {...getMenuProps()}>
+        {items.map((item) => (
+          <DropDownItem>{item.name}</DropDownItem>
+        ))}
+      </DropDown>
+```

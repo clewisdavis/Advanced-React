@@ -9,8 +9,8 @@ const SEARCH_PRODUCTS_QUERY = gql`
     searchTerms: allProducts(
       where: {
         OR: [
-          { name_contains_i: $searchTerm }
-          { description_contains_i: $searchTerm }
+          { name: { contains: $searchTerm } }
+          { description: { contains: $searchTerm } }
         ]
       }
     ) {
@@ -36,24 +36,31 @@ export default function Search() {
   const items = data?.searchTerms || [];
   const findItemsButChill = debounce(findItems, 350);
   resetIdCounter();
-  const { inputValue, getMenuProps, getInputProps, getComboboxProps } =
-    useCombobox({
-      items: [],
-      // fires when select the box
-      onInputValueChange() {
-        console.log('Input Change');
-        findItemsButChill({
-          // pass in the value of the input box
-          variables: {
-            searchTerm: inputValue,
-          },
-        });
-      },
-      // fire when select an item
-      onSelectedItemChange() {
-        console.log('Selected Item Change');
-      },
-    });
+  const {
+    isOpen,
+    inputValue,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    getItemProps,
+    highlightedIndex,
+  } = useCombobox({
+    items,
+    // fires when select the box
+    onInputValueChange() {
+      console.log('Input Change');
+      findItemsButChill({
+        // pass in the value of the input box
+        variables: {
+          searchTerm: inputValue,
+        },
+      });
+    },
+    // fire when select an item
+    onSelectedItemChange() {
+      console.log('Selected Item Change');
+    },
+  });
   return (
     <SearchStyles>
       <div {...getComboboxProps()}>
@@ -62,14 +69,26 @@ export default function Search() {
             type: 'search',
             placeholder: 'Search for an Item',
             id: 'search',
-            className: 'loading',
+            className: loading ? 'loading' : '',
           })}
         />
       </div>
       <DropDown {...getMenuProps()}>
-        {items.map((item) => (
-          <DropDownItem>{item.name}</DropDownItem>
-        ))}
+        {isOpen &&
+          items.map((item, index) => (
+            <DropDownItem
+              key={item.id}
+              {...getItemProps({ item })}
+              highlighted={index === highlightedIndex}
+            >
+              <img
+                src={item.photo.image.publicUrlTransform}
+                alt={item.name}
+                width="50"
+              />
+              {item.name}
+            </DropDownItem>
+          ))}
       </DropDown>
     </SearchStyles>
   );

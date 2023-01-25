@@ -5385,3 +5385,6 @@ export default function Search() {
         ))}
       </DropDown>
 ```
+
+- Doesn't work, have to update to Keystone 6. Going to skip and keep going with the course.
+- But the downshift package has good support for Aria and keyboard functionality built in.

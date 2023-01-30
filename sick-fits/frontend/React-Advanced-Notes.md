@@ -5388,3 +5388,43 @@ export default function Search() {
 
 - Doesn't work, have to update to Keystone 6. Going to skip and keep going with the course.
 - But the downshift package has good support for Aria and keyboard functionality built in.
+
+## Order Creation and Checkout
+
+- Using Stripe, first thing to do, is go and sign up for account at Stripe.com
+- Then go to the API Keys, and make an environmental variable that will be stored in our front end.
+- Next.js has instructions on how to expose environmental variables.
+- <https://nextjs.org/docs/basic-features/environment-variables>
+- Go to the root of your project folder, and crete a file `.env.local`
+- Copy the key from your Stripe account from the API Keys page.
+- In your `.env.local` file, add `NEXT_PUBLIC_STRIPE_KEY="PASTEKEYHERE"`
+
+- Confirm that the key is being pipped into the app, go to your Nav.js and just put it in the nav to see if it renders. You may have to restart the front end. `{process.env.NEXT_PUBLIC_STRIPE_KEY}`
+
+- Now, we can create a new checkout component. `components/Checkout.js`
+- Create a basic component and start defining the styled component.
+
+```JAVASCRIPT
+const CheckoutFormStyles = styled.form`
+  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  padding: 1rem;
+  display: grid;
+  grid-gap: 1rem;
+`;
+
+function Checkout() {
+  return (
+    <CheckoutFormStyles>
+      <p>Checkout</p>
+    </CheckoutFormStyles>
+  );
+}
+```
+
+- NOTE: We will use the form elements from Stripe.
+- Import into your `Cart` component and put it below your format money tag.
+- Open up your cart and you will see the checkout button
+
+- Next, start loading in the Stripe elements.

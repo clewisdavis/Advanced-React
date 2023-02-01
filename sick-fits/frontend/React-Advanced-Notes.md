@@ -5428,3 +5428,103 @@ function Checkout() {
 - Open up your cart and you will see the checkout button
 
 - Next, start loading in the Stripe elements.
+- Package that Stripe offers to allow you to embed cc fields into your application. So you don't have to fuss with any cc numbers yourself.
+
+- Add the `loadStripe()` method to your `Checkout` component and pass in the key from your `.env.local`
+
+```JAVASCRIPT
+import { loadStripe } from '@stripe/stripe-js';
+const stripeLib = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+```
+
+- Then we need to wrap our component in a provier from stripe and pass in the `stripeLib`.
+- And import `Elements`
+
+```JAVASCRIPT
+function Checkout() {
+  return (
+    <Elements stripe={stripeLib}>
+      <CheckoutFormStyles>
+        <p>Checkout</p>
+      </CheckoutFormStyles>
+    </Elements>
+  );
+}
+```
+
+- Now we want to embedd the cc elements. `<CardElement>`
+
+```JAVASCRIPT
+function Checkout() {
+  return (
+    <Elements stripe={stripeLib}>
+      <CheckoutFormStyles>
+        <p>Checkout</p>
+        <CardElement />
+      </CheckoutFormStyles>
+    </Elements>
+  );
+}
+```
+
+- And view your checkout, you can already see the form, cc form fields
+- Add a checkout button under the form.
+
+```JAVASCRIPT
+function Checkout() {
+  return (
+    <Elements stripe={stripeLib}>
+      <CheckoutFormStyles>
+        <CardElement />
+        <SickButton>Check Out Now</SickButton>
+      </CheckoutFormStyles>
+    </Elements>
+  );
+}
+```
+
+- Last thing, when someone submits the form, you have to submit all that information. Make an `onSubmit={handleSubmit}` on the `<CheckoutFormStyles>` component.
+
+```JAVASCRIPT
+function Checkout() {
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('I did it');
+  }
+
+  return (
+    <Elements stripe={stripeLib}>
+      <CheckoutFormStyles onSubmit={handleSubmit}>
+        <CardElement />
+        <SickButton>Check Out Now</SickButton>
+      </CheckoutFormStyles>
+    </Elements>
+  );
+}
+
+export { Checkout };
+```
+
+- That's the base work, in the next video, get into talking to stripe.
+
+## Writing our Client Side Checkout Handler Logic
+
+- Write out the logic in sudo code so we can do it one by one
+
+```JAVASCRIPT
+function Checkout() {
+  function handleSubmit(e) {
+    // 1. Stop the from from submitting and turn the loader on
+    e.preventDefault();
+    console.log('I did it');
+    // 2. Start the page transition
+    // 3. Create the payment method via stripe (Token comes back here if successful)
+    // 4. Handle any errors from stripe, cc errors for example
+    // 5. Send the token from step 3 to our keystone server, via a custom mutation
+    // 6. Change the page to view that order
+    // 7. Close the cart
+    // 8. Turn the loader off
+  }
+```
+
+- 

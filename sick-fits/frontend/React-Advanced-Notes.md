@@ -5527,4 +5527,22 @@ function Checkout() {
   }
 ```
 
-- 
+- 2. Start the page transition
+  - For the loading, use nProgress package, nice package to show a loading state.
+  - <https://ricostacruz.com/nprogress/>
+  - `nProgress.start();` in the `handleSubmit`
+
+- 3. Create the payment method via stripe (Token comes back here if successful)
+  - Now you can use some test cards to check out the form.
+  - <https://stripe.com/docs/testing>
+  - To test the form,
+  - `4242 4242 4242 4242` `02/23` `222` `22222`
+  - Enter in the cc info, and check out the object that gets returned from stripe.
+
+```JAVASCRIPT
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
+    console.log(paymentMethod);
+```

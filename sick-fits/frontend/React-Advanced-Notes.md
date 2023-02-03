@@ -5546,3 +5546,20 @@ function Checkout() {
     });
     console.log(paymentMethod);
 ```
+
+- 4. Handle any errors from stripe, cc errors for example
+
+```JAVASCRIPT
+  if (error) {
+      setError(error);
+  }
+
+    // add to your component
+  return (
+    <CheckoutFormStyles onSubmit={handleSubmit}>
+      {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
+      <CardElement />
+      <SickButton>Check Out Now</SickButton>
+    </CheckoutFormStyles>
+  );
+```

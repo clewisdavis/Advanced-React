@@ -3,6 +3,7 @@ import {
   Elements,
   useElements,
   useStripe,
+  setError,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import nProgress from 'nprogress';
@@ -41,14 +42,20 @@ function CheckoutForm() {
     });
     console.log(paymentMethod);
     // 4. Handle any errors from stripe, cc errors for example
+    if (error) {
+      setError(error);
+    }
     // 5. Send the token from step 3 to our keystone server, via a custom mutation
     // 6. Change the page to view that order
     // 7. Close the cart
     // 8. Turn the loader off
+    setLoading(false);
+    nProgress.done();
   }
 
   return (
     <CheckoutFormStyles onSubmit={handleSubmit}>
+      {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
       <CardElement />
       <SickButton>Check Out Now</SickButton>
     </CheckoutFormStyles>

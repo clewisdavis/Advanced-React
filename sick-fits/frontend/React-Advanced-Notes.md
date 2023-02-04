@@ -5563,3 +5563,9 @@ function Checkout() {
     </CheckoutFormStyles>
   );
 ```
+
+## Creating our Order and OrderItem Data Types
+
+- Have to create an order type, as well as order items.
+- Will copy all the fields from the item, and copy it.
+- Setting up the schema and backend.

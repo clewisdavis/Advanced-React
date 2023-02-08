@@ -5569,3 +5569,10 @@ function Checkout() {
 - Have to create an order type, as well as order items.
 - Will copy all the fields from the item, and copy it.
 - Setting up the schema and backend.
+- Add the date types so they display on our Keystone front end.
+- Orders and Order Type.
+
+## Custom Checkout Mutation with Stripe
+
+- Have to make the custom mutation to stripe to charge the card.
+-

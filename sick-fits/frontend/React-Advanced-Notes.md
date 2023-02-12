@@ -5575,4 +5575,11 @@ function Checkout() {
 ## Custom Checkout Mutation with Stripe
 
 - Have to make the custom mutation to stripe to charge the card.
--
+- backend stuff, just watch the video
+
+## Csutom Checkout Mutation with Stripe
+
+- Now create the front end
+- Running into an error, this may be the end of the road for this one.
+- Copied from the stepped solution, so I can keep moving forward.
+- Checkout custom mutation

@@ -5583,3 +5583,7 @@ function Checkout() {
 - Running into an error, this may be the end of the road for this one.
 - Copied from the stepped solution, so I can keep moving forward.
 - Checkout custom mutation
+
+## Creating our Order and OrderItems in our Mutation
+
+- Just getting through the video of backend stuff

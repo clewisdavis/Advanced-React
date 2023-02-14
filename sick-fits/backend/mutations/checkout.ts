@@ -76,8 +76,7 @@ async function checkout(
         description: cartItem.product.description,
         price: cartItem.product.price,
         quantity: cartItem.quantity,
-        image: { connect: { id: cartItem.product.photo.id }},
-        user: { connect: { id: userId }}
+        photo: { connect: { id: cartItem.product.photo.id }},
     }
     return orderItem;
   })
@@ -91,7 +90,7 @@ async function checkout(
     }
   });
   // 6. Clean up any old cart items
-  const cartItemIds = cartItems.map(cartItem => cartItem.id);
+  const cartItemIds = user.cart.map(cartItem => cartItem.id);
   await context.lists.CartItem.deleteMany({
     ids: cartItemIds
   });

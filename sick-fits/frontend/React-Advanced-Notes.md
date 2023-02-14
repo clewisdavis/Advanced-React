@@ -5587,3 +5587,13 @@ function Checkout() {
 ## Creating our Order and OrderItems in our Mutation
 
 - Just getting through the video of backend stuff
+- Finishing up the order
+
+## Finishing up teh Checkout UI and Flow
+
+- 1. Cart shows 12 items
+- 2. Change the page when the order is created
+- 3. Close the cart
+- 4. Refetch the users cart when they buy something
+
+## Front end Order Display, Displaying a single order

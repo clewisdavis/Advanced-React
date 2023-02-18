@@ -5597,3 +5597,5 @@ function Checkout() {
 - 4. Refetch the users cart when they buy something
 
 ## Front end Order Display, Displaying a single order
+
+- Just finishing this up.
